@@ -11,4 +11,4 @@ Entrega 3: https://docs.google.com/document/d/10aBJntLd5KtYhKsVzgCCJPVQjdv1FOc3_
 
 URL del despliegue:
 
-https://two024-tp-entrega-2-santinocarrizoo04.onrender.com
+https://two024-tp-entrega-3-santinocarrizoo04.onrender.com
