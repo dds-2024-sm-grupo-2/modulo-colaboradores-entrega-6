@@ -1,6 +1,7 @@
 package ar.edu.utn.dds.k3003.app;
 
 import ar.edu.utn.dds.k3003.facades.FachadaLogistica;
+import ar.edu.utn.dds.k3003.facades.FachadaColaboradores;
 import ar.edu.utn.dds.k3003.facades.FachadaViandas;
 import ar.edu.utn.dds.k3003.facades.dtos.ColaboradorDTO;
 import ar.edu.utn.dds.k3003.facades.dtos.FormaDeColaborarEnum;
@@ -13,7 +14,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaColaboradores {
+public class Fachada implements FachadaColaboradores{
 
   private final ColaboradorRepository colaboradorRepository;
   private final ColaboradorMapper colaboradorMapper;
