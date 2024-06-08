@@ -73,6 +73,6 @@ public class WebApp{
                 configOverrides.put(key, value);
             }
         }
-        return Persistence.createEntityManagerFactory("tp24db", configOverrides);
+        return Persistence.createEntityManagerFactory("postgres", configOverrides);
     }
 }
