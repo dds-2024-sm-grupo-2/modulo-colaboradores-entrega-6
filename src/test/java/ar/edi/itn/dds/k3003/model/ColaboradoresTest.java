@@ -48,13 +48,15 @@ public class ColaboradoresTest implements TestTP<FachadaColaboradores> {
   @DisplayName("Test agregar colaborador")
   void testAgregarColaborador() {
 
-    Colaborador colaborador1 = new Colaborador(this.nombre1);
+    Colaborador colaborador1 = new Colaborador();
+    colaborador1.setNombre(this.nombre1);
     ColaboradorDTO colaborador1DTO = colabMapper.map(colaborador1);
     ColaboradorDTO rtaDTO = instanciaFachada.agregar(colaborador1DTO);
     assertNotNull(rtaDTO.getId());
     System.out.print(rtaDTO.getId() + "\n");
 
-    Colaborador colaborador2 = new Colaborador("Pepe");
+    Colaborador colaborador2 = new Colaborador();
+    colaborador2.setNombre("Pepe");
     ColaboradorDTO colab2DTO = colabMapper.map(colaborador2);
     ColaboradorDTO rtaDTO2 = instanciaFachada.agregar(colab2DTO);
     assertNotNull(rtaDTO2.getId());
@@ -65,7 +67,8 @@ public class ColaboradoresTest implements TestTP<FachadaColaboradores> {
   @DisplayName("Test buscar colaboradorXID")
   void testBuscarXID() {
 
-    Colaborador colaborador1 = new Colaborador(this.nombre1);
+    Colaborador colaborador1 = new Colaborador();
+    colaborador1.setNombre(this.nombre1);
     ColaboradorDTO colaborador1DTO = colabMapper.map(colaborador1);
     ColaboradorDTO rtaDTO = instanciaFachada.agregar(colaborador1DTO);
     ColaboradorDTO rtaColaboradorDTO = instanciaFachada.buscarXId(rtaDTO.getId());
@@ -96,7 +99,8 @@ public class ColaboradoresTest implements TestTP<FachadaColaboradores> {
   @DisplayName("Test modificar formas de colaborar")
   void testModificarFormas() {
 
-    Colaborador colaborador1 = new Colaborador(this.nombre1);
+    Colaborador colaborador1 = new Colaborador();
+    colaborador1.setNombre(this.nombre1);
     ColaboradorDTO colaborador1DTO = colabMapper.map(colaborador1);
     ColaboradorDTO rtaDTO = instanciaFachada.agregar(colaborador1DTO);
     List<FormaDeColaborarEnum> nuevasFormas = new ArrayList<>();
@@ -114,7 +118,8 @@ public class ColaboradoresTest implements TestTP<FachadaColaboradores> {
     Double pesoDonadas = 1.5;
     Double pesoDistribuidas = (double) 1;
 
-    Colaborador colaborador1 = new Colaborador(this.nombre1);
+    Colaborador colaborador1 = new Colaborador();
+    colaborador1.setNombre(this.nombre1);
     ColaboradorDTO colaborador1DTO = colabMapper.map(colaborador1);
     ColaboradorDTO rtaDTO = instanciaFachada.agregar(colaborador1DTO);
     instanciaFachada.actualizarPesosPuntos(0.0, pesoDistribuidas, pesoDonadas, 0.0, 0.0);

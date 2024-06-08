@@ -15,7 +15,8 @@ public class ColaboradorMapper {
   }
 
   public Colaborador pam(ColaboradorDTO colaboradorDTO) {
-    Colaborador colaborador = new Colaborador(colaboradorDTO.getNombre());
+    Colaborador colaborador = new Colaborador();
+    colaborador.setNombre(colaboradorDTO.getNombre());
     colaborador.setFormas(colaboradorDTO.getFormas());
     colaborador.setId(colaboradorDTO.getId());
     return colaborador;

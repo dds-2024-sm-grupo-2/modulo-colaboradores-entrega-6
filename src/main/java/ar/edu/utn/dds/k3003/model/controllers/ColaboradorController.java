@@ -8,6 +8,7 @@ import ar.edu.utn.dds.k3003.model.dtos.PuntosDeColaboradorDTO;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 
+import javax.persistence.EntityManagerFactory;
 import java.util.NoSuchElementException;
 
 public class ColaboradorController {

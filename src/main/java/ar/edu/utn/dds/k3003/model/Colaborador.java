@@ -1,6 +1,8 @@
 package ar.edu.utn.dds.k3003.model;
 
 import ar.edu.utn.dds.k3003.facades.dtos.FormaDeColaborarEnum;
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,8 +10,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "colaborador")
 public class Colaborador {
-  @Id
-  @GeneratedValue
+  @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @Column (name = "nombre")
@@ -20,15 +21,7 @@ public class Colaborador {
   @Transient
   private List<FormaDeColaborarEnum> formas;
 
-  public Colaborador(String nombreColab) {
-    super();
-    this.nombre = nombreColab;
-    this.formas = new ArrayList<>();
-  }
-  public Colaborador(){
-    super();
-  }
-
+  public Colaborador() {}
   public Long getId() {
     return id;
   }

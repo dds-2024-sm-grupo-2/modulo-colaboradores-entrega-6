@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.javalin.Javalin;
+import io.javalin.http.Handler;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -20,13 +21,14 @@ import java.util.Map;
 import java.util.TimeZone;
 
 public class WebApp{
+    public static EntityManagerFactory entityManagerFactory;
     public static void main(String[] args){
 
         var env = System.getenv();
         var fachada  = new Fachada();
         var objectMapper = createObjectMapper();
         var colabController = new ColaboradorController(fachada);
-        EntityManagerFactory entityManagerFactory = startEntityManagerFactory();
+        startEntityManagerFactory(env);
 
         fachada.setViandasProxy(new ViandasProxy(objectMapper));
         fachada.setLogisticaProxy(new LogisticaProxy(objectMapper));
@@ -40,7 +42,7 @@ public class WebApp{
         var app = Javalin.create().start(port);
 
         app.get("/", ctx -> ctx.result("Hola Mundo"));
-        app.post("/colaboradores", colabController::agregar);
+        app.post("/colaboradores", new AgregarColaboradorController(fachada, entityManagerFactory));
         app.get("/colaboradores/{colaboradorID}", colabController::buscar);
         app.get("/colaboradores/{colaboradorID}/puntos", colabController::puntos);
         app.patch("/colaboradores/{colabID}", colabController::cambiarFormas);
@@ -60,9 +62,8 @@ public class WebApp{
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         objectMapper.setDateFormat(sdf);
     }
-    public static EntityManagerFactory startEntityManagerFactory(){
-
-        Map<String, String> env = System.getenv();
+    public static void startEntityManagerFactory(Map<String, String> env) {
+        // https://stackoverflow.com/questions/8836834/read-environment-variables-in-persistence-xml-file
         Map<String, Object> configOverrides = new HashMap<String, Object>();
         String[] keys = new String[] { "javax.persistence.jdbc.url", "javax.persistence.jdbc.user",
                 "javax.persistence.jdbc.password", "javax.persistence.jdbc.driver", "hibernate.hbm2ddl.auto",
@@ -73,6 +74,7 @@ public class WebApp{
                 configOverrides.put(key, value);
             }
         }
-        return Persistence.createEntityManagerFactory("postgres", configOverrides);
+        entityManagerFactory = Persistence.createEntityManagerFactory("tp24db_e7bc", configOverrides);
     }
+
 }

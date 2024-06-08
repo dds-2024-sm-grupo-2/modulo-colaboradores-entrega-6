@@ -47,7 +47,8 @@ public class Fachada implements FachadaColaboradores{
 
   @Override
   public ColaboradorDTO agregar(ColaboradorDTO colaboradorDTO) {
-    Colaborador colaborador = new Colaborador(colaboradorDTO.getNombre());
+    Colaborador colaborador = new Colaborador();
+    colaborador.setNombre(colaboradorDTO.getNombre());
     colaborador.setFormas(colaboradorDTO.getFormas());
     Colaborador colaboradorGuardado = this.colaboradorRepository.save(colaborador);
     colaboradorDTO.setId(colaboradorGuardado.getId());
