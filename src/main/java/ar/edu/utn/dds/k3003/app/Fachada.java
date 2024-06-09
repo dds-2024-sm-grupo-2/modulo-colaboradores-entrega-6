@@ -28,7 +28,6 @@ public class Fachada implements FachadaColaboradores{
   private FachadaViandas viandasFachada;
   private FachadaLogistica logisticaFachada;
   private static AtomicLong seqId = new AtomicLong();
-  private static AtomicLong seqId2 = new AtomicLong();
 
 
   public Fachada(){
