@@ -25,10 +25,10 @@ public class WebApp{
     public static void main(String[] args){
 
         var env = System.getenv();
+        startEntityManagerFactory(env);
         var fachada  = new Fachada();
         var objectMapper = createObjectMapper();
-        var colabController = new ColaboradorController(fachada);
-        startEntityManagerFactory(env);
+        var colabController = new ColaboradorController(fachada,entityManagerFactory);
 
         fachada.setViandasProxy(new ViandasProxy(objectMapper));
         fachada.setLogisticaProxy(new LogisticaProxy(objectMapper));
@@ -42,7 +42,7 @@ public class WebApp{
         var app = Javalin.create().start(port);
 
         app.get("/", ctx -> ctx.result("Hola Mundo"));
-        app.post("/colaboradores", new AgregarColaboradorController(fachada, entityManagerFactory));
+        app.post("/colaboradores", colabController::agregar);
         app.get("/colaboradores/{colaboradorID}", colabController::buscar);
         app.get("/colaboradores/{colaboradorID}/puntos", colabController::puntos);
         app.patch("/colaboradores/{colabID}", colabController::cambiarFormas);
@@ -65,8 +65,7 @@ public class WebApp{
     public static void startEntityManagerFactory(Map<String, String> env) {
         // https://stackoverflow.com/questions/8836834/read-environment-variables-in-persistence-xml-file
         Map<String, Object> configOverrides = new HashMap<String, Object>();
-        String[] keys = new String[] { "javax.persistence.jdbc.url", "javax.persistence.jdbc.user",
-                "javax.persistence.jdbc.password", "javax.persistence.jdbc.driver", "hibernate.hbm2ddl.auto",
+        String[] keys = new String[] { "javax.persistence.jdbc.url", "javax.persistence.jdbc.driver", "hibernate.hbm2ddl.auto",
                 "hibernate.connection.pool_size", "hibernate.show_sql" };
         for (String key : keys) {
             if (env.containsKey(key)) {

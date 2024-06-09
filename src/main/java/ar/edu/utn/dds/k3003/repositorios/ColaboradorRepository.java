@@ -2,6 +2,8 @@ package ar.edu.utn.dds.k3003.repositorios;
 
 import ar.edu.utn.dds.k3003.facades.dtos.FormaDeColaborarEnum;
 import ar.edu.utn.dds.k3003.model.Colaborador;
+
+import javax.persistence.EntityManager;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -9,12 +11,15 @@ public class ColaboradorRepository {
 
   private static AtomicLong seqId = new AtomicLong();
   private Collection<Colaborador> colaboradores;
+  public ColaboradorRepository() {}
 
-  public ColaboradorRepository() {
-    this.colaboradores = new ArrayList<>();
+  public Colaborador saveJPA(Colaborador colaborador, EntityManager em){
+    em.persist(colaborador);
+    colaborador.setId(seqId.getAndIncrement());
+    return colaborador;
   }
 
-  public Colaborador save(Colaborador colaborador) {
+  public Colaborador save(Colaborador colaborador){
     if (Objects.isNull(colaborador.getId())) {
       colaborador.setId(seqId.getAndIncrement());
       this.colaboradores.add(colaborador);

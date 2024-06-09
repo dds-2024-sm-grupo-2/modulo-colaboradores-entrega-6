@@ -12,6 +12,8 @@ import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.EntityManager;
+
 @Getter
 @Setter
 public class Fachada implements FachadaColaboradores{
@@ -22,16 +24,33 @@ public class Fachada implements FachadaColaboradores{
   private FachadaViandas viandasFachada;
   private FachadaLogistica logisticaFachada;
 
-  public Fachada() {
+  public Fachada(){
     this.colaboradorRepository = new ColaboradorRepository();
     this.colaboradorMapper = new ColaboradorMapper();
   }
 
+  public ColaboradorDTO agregarJPA(ColaboradorDTO colaboradorDTO, EntityManager em) {
+    Colaborador colaborador = new Colaborador();
+    colaborador.setNombre(colaboradorDTO.getNombre());
+    colaborador.setFormas(colaboradorDTO.getFormas());
+    Colaborador colabRta = this.colaboradorRepository.saveJPA(colaborador, em);
+    return colaboradorMapper.map(colabRta);
+  }
+
+  @Override
+  public ColaboradorDTO agregar(ColaboradorDTO colaboradorDTO) {
+    Colaborador colaborador = new Colaborador();
+    colaborador.setNombre(colaboradorDTO.getNombre());
+    colaborador.setFormas(colaboradorDTO.getFormas());
+    Colaborador colaboradorGuardado = this.colaboradorRepository.save(colaborador);
+    colaboradorDTO.setId(colaboradorGuardado.getId());
+    return colaboradorMapper.map(colaboradorGuardado);
+  }
   @Override
   public ColaboradorDTO modificar(
-      Long colaboradorId, List<FormaDeColaborarEnum> nuevasFormasDeColaborar) {
-    colaboradorRepository.modificarFormasDe(colaboradorId, nuevasFormasDeColaborar);
-    return this.buscarXId(colaboradorId);
+          Long colaboradorId, List<FormaDeColaborarEnum> nuevasFormasDeColaborar) {
+          colaboradorRepository.modificarFormasDe(colaboradorId, nuevasFormasDeColaborar);
+          return this.buscarXId(colaboradorId);
   }
 
   @Override
@@ -43,16 +62,6 @@ public class Fachada implements FachadaColaboradores{
       Double heladerasActivas) {
     this.setViandasDistribuidasPeso(viandasDistribuidas);
     this.setViandasDonadasPeso(viandasDonadas);
-  }
-
-  @Override
-  public ColaboradorDTO agregar(ColaboradorDTO colaboradorDTO) {
-    Colaborador colaborador = new Colaborador();
-    colaborador.setNombre(colaboradorDTO.getNombre());
-    colaborador.setFormas(colaboradorDTO.getFormas());
-    Colaborador colaboradorGuardado = this.colaboradorRepository.save(colaborador);
-    colaboradorDTO.setId(colaboradorGuardado.getId());
-    return colaboradorMapper.map(colaboradorGuardado);
   }
 
   @Override
