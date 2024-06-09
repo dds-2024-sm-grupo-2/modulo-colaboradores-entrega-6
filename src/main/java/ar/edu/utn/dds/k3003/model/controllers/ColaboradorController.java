@@ -87,5 +87,11 @@ public class ColaboradorController {
         ctx.result("Formula actualizada correctamente");
     }
 
+    public void borrar(Context ctx){
+
+        entityManager.getTransaction().begin();
+        entityManager.createQuery("DELETE FROM Colaborador ").executeUpdate();
+        entityManager.getTransaction().commit();
+    }
 
 }

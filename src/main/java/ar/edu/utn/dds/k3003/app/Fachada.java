@@ -72,6 +72,7 @@ public class Fachada implements FachadaColaboradores{
     colaborador.setPuntos(puntosCalculados);
     return puntosCalculados;
   }
+
   @Override
   public ColaboradorDTO agregar(ColaboradorDTO colaboradorDTO){
     Colaborador colaborador = new Colaborador();

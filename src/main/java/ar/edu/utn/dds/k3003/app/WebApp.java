@@ -48,6 +48,7 @@ public class WebApp{
         app.get("/colaboradores/{colaboradorID}/puntos", colabController::puntos);
         app.patch("/colaboradores/{colabID}", colabController::cambiarFormas);
         app.put("/formula", colabController::actualizar);
+        app.delete("/cleandb", colabController::borrar);
     }
     public static ObjectMapper createObjectMapper() {
         var objectMapper = new ObjectMapper();
