@@ -91,7 +91,7 @@ public class ColaboradorController {
 
         entityManager.getTransaction().begin();
         entityManager.createQuery("DELETE FROM Colaborador ").executeUpdate();
-        entityManager.createNativeQuery("ALTER SEQUENCE id RESTART WITH = 0").executeUpdate();
+        entityManager.createNativeQuery("ALTER SEQUENCE id RESTART WITH 0").executeUpdate();
         entityManager.getTransaction().commit();
     }
 }
