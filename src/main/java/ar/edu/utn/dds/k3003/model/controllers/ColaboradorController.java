@@ -90,8 +90,7 @@ public class ColaboradorController {
     public void borrar(Context ctx){
 
         entityManager.getTransaction().begin();
-        entityManager.createQuery("DELETE FROM Colaborador ").executeUpdate();
-        entityManager.createNativeQuery("ALTER SEQUENCE id RESTART WITH 0").executeUpdate();
+        entityManager.createQuery("DELETE FROM Colaborador ");
         entityManager.getTransaction().commit();
     }
 }
