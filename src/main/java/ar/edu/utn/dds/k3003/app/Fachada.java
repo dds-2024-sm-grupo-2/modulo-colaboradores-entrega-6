@@ -47,7 +47,9 @@ public class Fachada implements FachadaColaboradores{
     return colaboradorMapper.map(colabRta);
   }
   public ColaboradorDTO buscarXIdJPA(Long colaboradorId, EntityManager em){
+    em.getTransaction().begin();
     Colaborador colab = colaboradorRepository.findByIdJPA(colaboradorId, em);
+    em.getTransaction().commit();
     return colaboradorMapper.map(colab);
   }
 

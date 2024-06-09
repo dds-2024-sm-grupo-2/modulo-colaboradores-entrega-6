@@ -26,7 +26,6 @@ public class ColaboradorController {
         var colabDTO = ctx.bodyAsClass(ColaboradorDTO.class);
         var rtaDTO = this.fachada.agregarJPA(colabDTO, entityManager);
         ctx.status(HttpStatus.CREATED);
-        ctx.result("Colaborador agregado correctamente");
         ctx.json(rtaDTO);
     }
 
@@ -34,9 +33,9 @@ public class ColaboradorController {
         try{
             String parametroString = ctx.pathParam("colaboradorID");
             Long colabID = Long.parseLong(parametroString);
+            ColaboradorDTO colabBuscado = fachada.buscarXIdJPA(colabID, entityManager);
             ctx.status(HttpStatus.OK);
-            ctx.result("Colaborador encontrado");
-            ctx.json(fachada.buscarXIdJPA(colabID, entityManager));
+            ctx.json(colabBuscado);
         }
         catch (NoSuchElementException ex) {
             ctx.status(HttpStatus.NOT_FOUND);
