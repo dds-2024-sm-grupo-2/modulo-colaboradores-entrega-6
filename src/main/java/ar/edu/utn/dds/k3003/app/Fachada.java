@@ -33,7 +33,9 @@ public class Fachada implements FachadaColaboradores{
     Colaborador colaborador = new Colaborador();
     colaborador.setNombre(colaboradorDTO.getNombre());
     colaborador.setFormas(colaboradorDTO.getFormas());
+    em.getTransaction().begin();
     Colaborador colabRta = this.colaboradorRepository.saveJPA(colaborador, em);
+    em.getTransaction().commit();
     return colaboradorMapper.map(colabRta);
   }
 

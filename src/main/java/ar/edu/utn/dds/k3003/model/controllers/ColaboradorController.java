@@ -15,22 +15,16 @@ import java.util.NoSuchElementException;
 
 public class ColaboradorController {
     private final Fachada fachada;
-    private final EntityManagerFactory entityManagerFactory;
+    private final EntityManager entityManager;
 
-    public ColaboradorController(Fachada fachada, EntityManagerFactory entityManagerFactory) {
+    public ColaboradorController(Fachada fachada, EntityManager entityManager) {
         this.fachada = fachada;
-        this.entityManagerFactory = entityManagerFactory;
+        this.entityManager = entityManager;
     }
 
     public void agregar(Context ctx){
-        EntityManager em = entityManagerFactory.createEntityManager();
-
-        em.getTransaction().begin();
         var colabDTO = ctx.bodyAsClass(ColaboradorDTO.class);
-        var rtaDTO = this.fachada.agregarJPA(colabDTO, em);
-        em.getTransaction().commit();
-        em.close();
-
+        var rtaDTO = this.fachada.agregarJPA(colabDTO, entityManager);
         ctx.status(HttpStatus.CREATED);
         ctx.result("Colaborador agregado correctamente");
         ctx.json(rtaDTO);

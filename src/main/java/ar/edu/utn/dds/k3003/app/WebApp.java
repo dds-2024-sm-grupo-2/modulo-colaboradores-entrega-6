@@ -26,9 +26,10 @@ public class WebApp{
 
         var env = System.getenv();
         startEntityManagerFactory(env);
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
         var fachada  = new Fachada();
         var objectMapper = createObjectMapper();
-        var colabController = new ColaboradorController(fachada,entityManagerFactory);
+        var colabController = new ColaboradorController(fachada,entityManager);
 
         fachada.setViandasProxy(new ViandasProxy(objectMapper));
         fachada.setLogisticaProxy(new LogisticaProxy(objectMapper));
@@ -73,7 +74,7 @@ public class WebApp{
                 configOverrides.put(key, value);
             }
         }
-        entityManagerFactory = Persistence.createEntityManagerFactory("tp24db_e7bc", configOverrides);
+        entityManagerFactory = Persistence.createEntityManagerFactory("db", configOverrides);
     }
 
 }

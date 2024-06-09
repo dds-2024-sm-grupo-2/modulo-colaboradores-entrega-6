@@ -17,7 +17,6 @@ public class ColaboradorRepository {
 
   public Colaborador saveJPA(Colaborador colaborador, EntityManager em){
     em.persist(colaborador);
-    colaborador.setId(seqId.getAndIncrement());
     return colaborador;
   }
 
