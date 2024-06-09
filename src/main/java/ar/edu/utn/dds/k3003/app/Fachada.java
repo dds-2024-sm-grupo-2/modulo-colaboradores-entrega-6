@@ -8,7 +8,11 @@ import ar.edu.utn.dds.k3003.facades.dtos.FormaDeColaborarEnum;
 import ar.edu.utn.dds.k3003.model.Colaborador;
 import ar.edu.utn.dds.k3003.repositorios.ColaboradorMapper;
 import ar.edu.utn.dds.k3003.repositorios.ColaboradorRepository;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +27,9 @@ public class Fachada implements FachadaColaboradores{
   private Double viandasDistribuidasPeso, viandasDonadasPeso;
   private FachadaViandas viandasFachada;
   private FachadaLogistica logisticaFachada;
+  private static AtomicLong seqId = new AtomicLong();
+  private static AtomicLong seqId2 = new AtomicLong();
+
 
   public Fachada(){
     this.colaboradorRepository = new ColaboradorRepository();
@@ -33,20 +40,37 @@ public class Fachada implements FachadaColaboradores{
     Colaborador colaborador = new Colaborador();
     colaborador.setNombre(colaboradorDTO.getNombre());
     colaborador.setFormas(colaboradorDTO.getFormas());
+
     em.getTransaction().begin();
     Colaborador colabRta = this.colaboradorRepository.saveJPA(colaborador, em);
     em.getTransaction().commit();
     return colaboradorMapper.map(colabRta);
   }
+  public ColaboradorDTO buscarXIdJPA(Long colaboradorId, EntityManager em){
+    Colaborador colab = colaboradorRepository.findByIdJPA(colaboradorId, em);
+    return colaboradorMapper.map(colab);
+  }
 
+  public ColaboradorDTO modificarJPA(
+          Long colaboradorId, List<FormaDeColaborarEnum> nuevasFormasDeColaborar, EntityManager em){
+    em.getTransaction().begin();
+    colaboradorRepository.modificarFormasDeJPA(colaboradorId, nuevasFormasDeColaborar, em);
+    em.getTransaction().commit();
+    return this.buscarXIdJPA(colaboradorId, em);
+  }
   @Override
-  public ColaboradorDTO agregar(ColaboradorDTO colaboradorDTO) {
+  public ColaboradorDTO agregar(ColaboradorDTO colaboradorDTO){
     Colaborador colaborador = new Colaborador();
     colaborador.setNombre(colaboradorDTO.getNombre());
     colaborador.setFormas(colaboradorDTO.getFormas());
     Colaborador colaboradorGuardado = this.colaboradorRepository.save(colaborador);
     colaboradorDTO.setId(colaboradorGuardado.getId());
     return colaboradorMapper.map(colaboradorGuardado);
+  }
+  @Override
+  public ColaboradorDTO buscarXId(Long colaboradorId) {
+    Colaborador colab = colaboradorRepository.findById(colaboradorId);
+    return colaboradorMapper.map(colab);
   }
   @Override
   public ColaboradorDTO modificar(
@@ -79,11 +103,7 @@ public class Fachada implements FachadaColaboradores{
     return puntosCalculados;
   }
 
-  @Override
-  public ColaboradorDTO buscarXId(Long colaboradorId) {
-    Colaborador colab = colaboradorRepository.findById(colaboradorId);
-    return colaboradorMapper.map(colab);
-  }
+
 
   @Override
   public void setLogisticaProxy(FachadaLogistica logistica) {

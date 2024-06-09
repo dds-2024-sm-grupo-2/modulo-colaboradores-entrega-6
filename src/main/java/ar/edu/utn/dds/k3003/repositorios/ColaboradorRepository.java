@@ -19,7 +19,6 @@ public class ColaboradorRepository {
     em.persist(colaborador);
     return colaborador;
   }
-
   public Colaborador save(Colaborador colaborador){
     if (Objects.isNull(colaborador.getId())) {
       colaborador.setId(seqId.getAndIncrement());
@@ -27,7 +26,9 @@ public class ColaboradorRepository {
     }
     return colaborador;
   }
-
+  public Colaborador findByIdJPA(Long id, EntityManager em) {
+    return em.find(Colaborador.class, id);
+  }
   public Colaborador findById(Long id) {
     Optional<Colaborador> first =
         this.colaboradores.stream().filter(x -> x.getId().equals(id)).findFirst();
@@ -35,6 +36,9 @@ public class ColaboradorRepository {
         () -> new NoSuchElementException(String.format("No hay un colaborador de id: %s", id)));
   }
 
+  public void modificarFormasDeJPA(Long id, List<FormaDeColaborarEnum> formas, EntityManager em){
+    this.findByIdJPA(id, em).setFormas(formas);
+  }
   public void modificarFormasDe(Long id, List<FormaDeColaborarEnum> formas) {
     this.findById(id).setFormas(formas);
   }

@@ -3,6 +3,8 @@ package ar.edu.utn.dds.k3003.repositorios;
 import ar.edu.utn.dds.k3003.facades.dtos.ColaboradorDTO;
 import ar.edu.utn.dds.k3003.model.Colaborador;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 public class ColaboradorMapper {
 
   public ColaboradorMapper() {}

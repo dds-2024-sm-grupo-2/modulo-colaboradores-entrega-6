@@ -9,8 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.javalin.Javalin;
-import io.javalin.http.Handler;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -25,8 +23,10 @@ public class WebApp{
     public static void main(String[] args){
 
         var env = System.getenv();
+
         startEntityManagerFactory(env);
         EntityManager entityManager = entityManagerFactory.createEntityManager();
+
         var fachada  = new Fachada();
         var objectMapper = createObjectMapper();
         var colabController = new ColaboradorController(fachada,entityManager);
@@ -54,7 +54,6 @@ public class WebApp{
         configureObjectMapper(objectMapper);
         return objectMapper;
     }
-
     public static void configureObjectMapper(ObjectMapper objectMapper) {
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
@@ -66,7 +65,8 @@ public class WebApp{
     public static void startEntityManagerFactory(Map<String, String> env) {
         // https://stackoverflow.com/questions/8836834/read-environment-variables-in-persistence-xml-file
         Map<String, Object> configOverrides = new HashMap<String, Object>();
-        String[] keys = new String[] {};
+        String[] keys = new String[] { "javax.persistence.jdbc.url", "javax.persistence.jdbc.user",
+                "javax.persistence.jdbc.driver"};
         for (String key : keys) {
             if (env.containsKey(key)) {
                 String value = env.get(key);
@@ -75,5 +75,4 @@ public class WebApp{
         }
         entityManagerFactory = Persistence.createEntityManagerFactory("db", configOverrides);
     }
-
 }
