@@ -36,7 +36,7 @@ public class ColaboradorController {
             Long colabID = Long.parseLong(parametroString);
             ctx.status(HttpStatus.OK);
             ctx.result("Colaborador encontrado");
-            ctx.json(fachada.buscarXId(colabID));
+            ctx.json(fachada.buscarXIdJPA(colabID, entityManager));
         }
         catch (NoSuchElementException ex) {
             ctx.status(HttpStatus.NOT_FOUND);
@@ -49,7 +49,7 @@ public class ColaboradorController {
             String parametroString = ctx.pathParam("colabID");
             Long colabID = Long.parseLong(parametroString);
             var cuerpoJSON = ctx.bodyAsClass(FormasDeColaborarDTO.class);
-            var rtaDTO = fachada.modificar(colabID, cuerpoJSON.getFormas());
+            var rtaDTO = fachada.modificarJPA(colabID, cuerpoJSON.getFormas(), entityManager);
 
             ctx.status(HttpStatus.OK);
             ctx.result("Formas cambiadas correctamente");
