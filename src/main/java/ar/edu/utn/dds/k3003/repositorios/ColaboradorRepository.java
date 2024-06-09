@@ -16,6 +16,7 @@ public class ColaboradorRepository {
   }
 
   public Colaborador saveJPA(Colaborador colaborador, EntityManager em){
+    colaborador.setPuntos((double)0);
     em.persist(colaborador);
     return colaborador;
   }

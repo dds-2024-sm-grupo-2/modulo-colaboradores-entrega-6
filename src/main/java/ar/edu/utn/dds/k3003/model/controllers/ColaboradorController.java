@@ -65,11 +65,10 @@ public class ColaboradorController {
         try {
             String parametroString = ctx.pathParam("colaboradorID");
             Long colabID = Long.parseLong(parametroString);
-            var puntosDelColab = this.fachada.puntos(colabID);
+            var puntosDelColab = this.fachada.puntosJPA(colabID, entityManager);
             PuntosDeColaboradorDTO puntosDTOrta = new PuntosDeColaboradorDTO();
             puntosDTOrta.setPuntos(puntosDelColab);
             ctx.status(HttpStatus.FOUND);
-            ctx.result("Puntos obtenidos correctamente");
             ctx.json(puntosDTOrta);
 
         }

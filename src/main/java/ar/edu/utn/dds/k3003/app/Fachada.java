@@ -60,6 +60,18 @@ public class Fachada implements FachadaColaboradores{
     em.getTransaction().commit();
     return this.buscarXIdJPA(colaboradorId, em);
   }
+
+  public Double puntosJPA(Long colaboradorId, EntityManager em) {
+    ColaboradorDTO colaboradorDTO = this.buscarXIdJPA(colaboradorId, em);
+    Colaborador colaborador = colaboradorMapper.pam(colaboradorDTO);
+    Double puntosCalculados =
+            ((this.viandasDistribuidasPeso
+                    * logisticaFachada.trasladosDeColaborador(colaboradorId, 1, 2024).size()))
+                    + (this.viandasDonadasPeso
+                    * viandasFachada.viandasDeColaborador(colaboradorId, 1, 2024).size());
+    colaborador.setPuntos(puntosCalculados);
+    return puntosCalculados;
+  }
   @Override
   public ColaboradorDTO agregar(ColaboradorDTO colaboradorDTO){
     Colaborador colaborador = new Colaborador();
