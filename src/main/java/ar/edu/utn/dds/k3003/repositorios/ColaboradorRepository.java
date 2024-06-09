@@ -11,7 +11,9 @@ public class ColaboradorRepository {
 
   private static AtomicLong seqId = new AtomicLong();
   private Collection<Colaborador> colaboradores;
-  public ColaboradorRepository() {}
+  public ColaboradorRepository() {
+    this.colaboradores = new ArrayList<>();
+  }
 
   public Colaborador saveJPA(Colaborador colaborador, EntityManager em){
     em.persist(colaborador);

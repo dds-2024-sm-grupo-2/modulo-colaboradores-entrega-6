@@ -13,6 +13,8 @@
         <properties>
             <property name="javax.persistence.jdbc.user" value="santinocarrizo"/>
             <property name="javax.persistence.jdbc.password" value="sWQ0FFl33OpEXAz0GTaQ5fh2eIcgSJ2S" />
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://dpg-cphrl1mct0pc73fijvmg-a.oregon-postgres.render.com:5432/tp24db_e7bc"/>
 
             <property name="hibernate.connection.pool_size" value="10" />
             <property name="hibernate.archive.autodetection" value="class" />
