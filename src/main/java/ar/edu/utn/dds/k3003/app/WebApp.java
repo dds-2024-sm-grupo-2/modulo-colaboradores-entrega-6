@@ -66,8 +66,7 @@ public class WebApp{
     public static void startEntityManagerFactory(Map<String, String> env) {
         // https://stackoverflow.com/questions/8836834/read-environment-variables-in-persistence-xml-file
         Map<String, Object> configOverrides = new HashMap<String, Object>();
-        String[] keys = new String[] { "javax.persistence.jdbc.url", "javax.persistence.jdbc.driver", "hibernate.hbm2ddl.auto",
-                "hibernate.connection.pool_size", "hibernate.show_sql" };
+        String[] keys = new String[] {};
         for (String key : keys) {
             if (env.containsKey(key)) {
                 String value = env.get(key);
