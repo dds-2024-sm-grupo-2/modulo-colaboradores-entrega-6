@@ -24,7 +24,7 @@ public class LogisticaProxy implements FachadaLogistica {
     public LogisticaProxy(ObjectMapper objectMapper) {
 
         var env = System.getenv();
-        this.endpoint = env.getOrDefault("URL_LOGISTICA", "http://localhost:8083/");
+        this.endpoint = env.getOrDefault("URL_LOGISTICA", "https://two024-tp-entrega-3-julian-mosquera.onrender.com/");
 
         var retrofit =
                 new Retrofit.Builder()
