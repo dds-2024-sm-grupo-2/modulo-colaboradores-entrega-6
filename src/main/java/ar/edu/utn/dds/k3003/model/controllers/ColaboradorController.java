@@ -33,7 +33,7 @@ public class ColaboradorController {
         try{
             String parametroString = ctx.pathParam("colaboradorID");
             Long colabID = Long.parseLong(parametroString);
-            ColaboradorDTO colabBuscado = fachada.buscarXIdJPA(colabID, entityManager);
+            Colaborador colabBuscado = entityManager.find(Colaborador.class,colabID);
             ctx.status(HttpStatus.OK);
             ctx.json(colabBuscado);
         }
