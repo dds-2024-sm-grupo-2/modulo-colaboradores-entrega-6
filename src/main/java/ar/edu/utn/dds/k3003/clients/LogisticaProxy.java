@@ -32,7 +32,7 @@ public class LogisticaProxy implements FachadaLogistica {
                         .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                         .build();
 
-        this.service = new MockRetrofitClients();
+        this.service = retrofit.create(LogisticaRetrofitClient.class);
     }
     @Override
     public RutaDTO agregar(RutaDTO var1){return null;}
@@ -41,7 +41,7 @@ public class LogisticaProxy implements FachadaLogistica {
     @Override
     public TrasladoDTO asignarTraslado(TrasladoDTO var1) throws TrasladoNoAsignableException{return null;}
     @Override
-    public List<TrasladoDTO> trasladosDeColaborador(Long var1, Integer var2, Integer var3){
+    public List<TrasladoDTO> trasladosDeColaborador(Long var1, Integer var2, Integer var3) throws NoSuchElementException{
         Response<List<TrasladoDTO>> execute = null;
         try {
             execute = service.findByTraslado(var1).execute();

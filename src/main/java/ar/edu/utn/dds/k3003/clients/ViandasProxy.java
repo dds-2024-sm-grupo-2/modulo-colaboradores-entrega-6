@@ -30,7 +30,7 @@ public class ViandasProxy implements FachadaViandas {
                         .addConverterFactory(JacksonConverterFactory.create(objectMapper))
                         .build();
 
-        this.service = new MockRetrofitClients();
+        this.service = retrofit.create(ViandasRetrofitClient.class);
     }
 
     @Override
@@ -43,7 +43,7 @@ public class ViandasProxy implements FachadaViandas {
     public List<ViandaDTO> viandasDeColaborador(Long aLong, Integer integer, Integer integer1) throws NoSuchElementException {
         Response<List<ViandaDTO>> execute = null;
         try {
-            execute = service.findByViandas(aLong, integer, integer1).execute();
+            execute = service.findByViandas(aLong, integer1, integer).execute();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -59,17 +59,7 @@ public class ViandasProxy implements FachadaViandas {
 
     @SneakyThrows
     @Override
-    public ViandaDTO buscarXQR(String qr) throws NoSuchElementException {
-        Response<ViandaDTO> execute = service.get(qr).execute();
-
-        if (execute.isSuccessful()) {
-            return execute.body();
-        }
-        if (execute.code() == HttpStatus.NOT_FOUND.getCode()) {
-            throw new NoSuchElementException("no se encontro la vianda " + qr);
-        }
-        throw new RuntimeException("Error conectandose con el componente viandas");
-    }
+    public ViandaDTO buscarXQR(String qr) throws NoSuchElementException {return null;}
 
     @Override
     public void setHeladerasProxy(FachadaHeladeras fachadaHeladeras) {}
