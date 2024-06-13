@@ -25,7 +25,7 @@ public class LogisticaProxy implements FachadaLogistica {
     public LogisticaProxy(ObjectMapper objectMapper) {
 
         var env = System.getenv();
-        this.endpoint = "https://two024-tp-entrega-3-julian-mosquera.onrender.com/";
+        this.endpoint = env.getOrDefault("URL_LOGISTICA", "https://two024-tp-entrega-3-julian-mosquera.onrender.com/");
 
         var retrofit =
                 new Retrofit.Builder()
