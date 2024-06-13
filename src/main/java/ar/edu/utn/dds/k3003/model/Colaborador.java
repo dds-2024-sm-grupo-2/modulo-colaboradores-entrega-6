@@ -1,9 +1,6 @@
 package ar.edu.utn.dds.k3003.model;
 
 import ar.edu.utn.dds.k3003.facades.dtos.FormaDeColaborarEnum;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -18,7 +15,10 @@ public class Colaborador {
   @Column
   private Double puntos = (double) 0;
 
-  @Transient
+  @ElementCollection(targetClass = FormaDeColaborarEnum.class)
+  @Enumerated(EnumType.STRING) // Puedes usar EnumType.ORDINAL si prefieres almacenar índices
+  @CollectionTable(name = "colaborador_formas_de_colaborar", joinColumns = @JoinColumn(name = "colaborador_id"))
+  @Column(name = "forma_de_colaborar")
   private List<FormaDeColaborarEnum> formas;
 
   public Colaborador() {}
