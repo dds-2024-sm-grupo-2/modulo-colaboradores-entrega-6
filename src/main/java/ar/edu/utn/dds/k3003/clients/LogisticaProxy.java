@@ -8,6 +8,7 @@ import ar.edu.utn.dds.k3003.facades.dtos.TrasladoDTO;
 import ar.edu.utn.dds.k3003.facades.exceptions.TrasladoNoAsignableException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.HttpStatus;
+import lombok.SneakyThrows;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.jackson.JacksonConverterFactory;
@@ -41,13 +42,9 @@ public class LogisticaProxy implements FachadaLogistica {
     @Override
     public TrasladoDTO asignarTraslado(TrasladoDTO var1) throws TrasladoNoAsignableException{return null;}
     @Override
+    @SneakyThrows
     public List<TrasladoDTO> trasladosDeColaborador(Long var1, Integer var2, Integer var3) throws NoSuchElementException{
-        Response<List<TrasladoDTO>> execute = null;
-        try {
-            execute = service.findByTraslado(var1).execute();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        Response<List<TrasladoDTO>> execute = service.findByTraslado(var1).execute();
 
         if (execute.isSuccessful()){
             return execute.body();

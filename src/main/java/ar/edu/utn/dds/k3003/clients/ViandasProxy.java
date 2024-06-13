@@ -40,13 +40,9 @@ public class ViandasProxy implements FachadaViandas {
     public ViandaDTO modificarEstado(String s, EstadoViandaEnum estadoViandaEnum) throws NoSuchElementException {return null;}
 
     @Override
+    @SneakyThrows
     public List<ViandaDTO> viandasDeColaborador(Long aLong, Integer integer, Integer integer1) throws NoSuchElementException {
-        Response<List<ViandaDTO>> execute = null;
-        try {
-            execute = service.findByViandas(aLong, integer1, integer).execute();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        Response<List<ViandaDTO>> execute = service.findByViandas(aLong, integer1, integer).execute();
 
         if (execute.isSuccessful()){
             return execute.body();
