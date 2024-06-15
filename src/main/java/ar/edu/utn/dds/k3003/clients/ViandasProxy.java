@@ -22,7 +22,7 @@ public class ViandasProxy implements FachadaViandas {
     public ViandasProxy(ObjectMapper objectMapper) {
 
         var env = System.getenv();
-        this.endpoint = env.getOrDefault("URL_VIANDAS", "https://two024-tp-entrega-2-danielbare12.onrender.com/");
+        this.endpoint = env.getOrDefault("URL_VIANDAS", "http://localhost:8082/");
 
         var retrofit =
                 new Retrofit.Builder()
@@ -41,8 +41,8 @@ public class ViandasProxy implements FachadaViandas {
 
     @Override
     @SneakyThrows
-    public List<ViandaDTO> viandasDeColaborador(Long aLong, Integer integer, Integer integer1) throws NoSuchElementException {
-        Response<List<ViandaDTO>> execute = service.findByViandas(aLong, integer1, integer).execute();
+    public List<ViandaDTO> viandasDeColaborador(Long id, Integer mes, Integer anio) throws NoSuchElementException {
+        Response<List<ViandaDTO>> execute = service.findByViandas(id, anio, mes).execute();
 
         if (execute.isSuccessful()){
             return execute.body();

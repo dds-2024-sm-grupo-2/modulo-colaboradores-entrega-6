@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface LogisticaRetrofitClient {
     @GET("traslados/search/findByColaboradorId")
-    Call<List<TrasladoDTO>> findByTraslado(@Query("colaboradorId") Long id, @Query("anio") Integer anio, @Query("mes") Integer mes);
+    Call<List<TrasladoDTO>> findByTraslado(@Query("id") Long id, @Query("anio") Integer anio, @Query("mes") Integer mes);
 
 }

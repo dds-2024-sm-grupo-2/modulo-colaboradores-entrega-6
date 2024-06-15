@@ -25,7 +25,7 @@ public class LogisticaProxy implements FachadaLogistica {
     public LogisticaProxy(ObjectMapper objectMapper) {
 
         var env = System.getenv();
-        this.endpoint = env.getOrDefault("URL_LOGISTICA", "https://two024-tp-entrega-3-julian-mosquera.onrender.com/");
+        this.endpoint = env.getOrDefault("URL_LOGISTICA", "https://two024-tp-entrega-3-kenzogrosvald.onrender.com");
 
         var retrofit =
                 new Retrofit.Builder()
@@ -42,9 +42,13 @@ public class LogisticaProxy implements FachadaLogistica {
     @Override
     public TrasladoDTO asignarTraslado(TrasladoDTO var1) throws TrasladoNoAsignableException{return null;}
     @Override
-    @SneakyThrows
-    public List<TrasladoDTO> trasladosDeColaborador(Long var1, Integer var2, Integer var3) throws NoSuchElementException{
-        Response<List<TrasladoDTO>> execute = service.findByTraslado(var1, var3, var2).execute();
+    public List<TrasladoDTO> trasladosDeColaborador(Long var1, Integer mes, Integer anio) throws NoSuchElementException{
+        Response<List<TrasladoDTO>> execute = null;
+        try {
+            execute = service.findByTraslado(var1, anio, mes).execute();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
         if (execute.isSuccessful()){
             return execute.body();
