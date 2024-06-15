@@ -50,7 +50,7 @@ public class LogisticaProxy implements FachadaLogistica {
             return execute.body();
         }
         if (execute.code() == HttpStatus.NOT_FOUND.getCode()){
-            throw new NoSuchElementException("No se encontro al colaborador");
+            throw new NoSuchElementException("No se encontro al colaborador en LOGISTICA");
         }
         throw new RuntimeException("Error al conectarse con Logistica");
     }
