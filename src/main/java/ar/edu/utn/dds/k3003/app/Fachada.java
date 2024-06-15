@@ -63,9 +63,9 @@ public class Fachada implements FachadaColaboradores{
   public Double puntosJPA(Long colaboradorId, EntityManager em) {
     Double puntosCalculados =
             ((this.viandasDistribuidasPeso
-                    * logisticaFachada.trasladosDeColaborador(colaboradorId, 1, 2024).size()))
+                    * logisticaFachada.trasladosDeColaborador(colaboradorId, 5, 2024).size()))
                     + (this.viandasDonadasPeso
-                    * viandasFachada.viandasDeColaborador(colaboradorId, 1, 2024).size());
+                    * viandasFachada.viandasDeColaborador(colaboradorId, 5, 2024).size());
     em.getTransaction().begin();
     Colaborador colaborador = em.find(Colaborador.class, colaboradorId);
     colaborador.setPuntos(puntosCalculados);
