@@ -7,6 +7,6 @@ Componente: Colaboradores
 
 Contexto: https://docs.google.com/document/d/1vlYmWUJaKandhazZ8mAKcG8t91IAZ-81WhJdITJhCBA/edit
 
-Entrega 3: https://docs.google.com/document/d/10aBJntLd5KtYhKsVzgCCJPVQjdv1FOc3_N4LKWSxxK8/edit
+Entrega 3: https://docs.google.com/document/d/1xxyOkP0KZS-gfQZb9MCanJwkxXvRIHLzzPb8GrpGOLM/edit
 
 URL del despliegue: https://two024-tp-entrega-3-santinocarrizoo04.onrender.com
