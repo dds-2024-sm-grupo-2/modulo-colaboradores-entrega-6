@@ -44,6 +44,7 @@ public class LogisticaProxy implements FachadaLogistica {
     @Override
     public List<TrasladoDTO> trasladosDeColaborador(Long var1, Integer mes, Integer anio) throws NoSuchElementException{
         Response<List<TrasladoDTO>> execute = null;
+
         try {
             execute = service.findByTraslado(var1, anio, mes).execute();
         } catch (IOException e) {
