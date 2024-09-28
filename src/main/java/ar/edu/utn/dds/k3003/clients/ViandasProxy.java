@@ -44,7 +44,7 @@ public class ViandasProxy implements FachadaViandas {
         Response<List<ViandaDTO>> execute = null;
 
         try {
-            execute = service.findByViandas(id, mes, anio).execute();
+            execute = service.findByViandas(id, anio, mes).execute();
         }catch (IOException e){
             throw new RuntimeException(e);
         }
