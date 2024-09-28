@@ -40,7 +40,6 @@ public class ViandasProxy implements FachadaViandas {
     public ViandaDTO modificarEstado(String s, EstadoViandaEnum estadoViandaEnum) throws NoSuchElementException {return null;}
 
     @Override
-    @SneakyThrows
     public List<ViandaDTO> viandasDeColaborador(Long id, Integer mes, Integer anio) throws NoSuchElementException {
         Response<List<ViandaDTO>> execute = null;
 
