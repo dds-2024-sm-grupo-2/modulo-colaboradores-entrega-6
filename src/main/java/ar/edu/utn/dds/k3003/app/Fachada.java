@@ -60,12 +60,12 @@ public class Fachada implements FachadaColaboradores{
     return this.buscarXIdJPA(colaboradorId, em);
   }
 
-  public Double puntosJPA(Long colaboradorId, EntityManager em) {
+  public Double puntosJPA(Long colaboradorId, EntityManager em, Integer anio, Integer mes) {
     Double puntosCalculados =
             ((this.viandasDistribuidasPeso
-                    * logisticaFachada.trasladosDeColaborador(colaboradorId, 5, 2024).size()))
+                    * logisticaFachada.trasladosDeColaborador(colaboradorId, mes, anio).size()))
                     + (this.viandasDonadasPeso
-                    * viandasFachada.viandasDeColaborador(colaboradorId, 5, 2024).size());
+                    * viandasFachada.viandasDeColaborador(colaboradorId, mes, anio).size());
     em.getTransaction().begin();
     Colaborador colaborador = em.find(Colaborador.class, colaboradorId);
     colaborador.setPuntos(puntosCalculados);
