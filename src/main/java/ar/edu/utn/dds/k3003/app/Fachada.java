@@ -9,12 +9,13 @@ import ar.edu.utn.dds.k3003.model.Colaborador;
 import ar.edu.utn.dds.k3003.repositorios.ColaboradorMapper;
 import ar.edu.utn.dds.k3003.repositorios.ColaboradorRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
 import lombok.Getter;
 import lombok.Setter;
+import io.micrometer.core.instrument.Counter;
 
 import javax.persistence.EntityManager;
 
@@ -29,6 +30,10 @@ public class Fachada implements FachadaColaboradores{
   private FachadaLogistica logisticaFachada;
   private static AtomicLong seqId = new AtomicLong();
 
+  private PrometheusMeterRegistry registry;
+  private Counter cantidadColaboradores;
+  private Counter puntosTotal;
+  private Counter puntosPromedio;
 
   public Fachada(){
     this.colaboradorRepository = new ColaboradorRepository();
@@ -43,6 +48,7 @@ public class Fachada implements FachadaColaboradores{
     em.getTransaction().begin();
     Colaborador colabRta = this.colaboradorRepository.saveJPA(colaborador, em);
     em.getTransaction().commit();
+    this.cantidadColaboradores.increment();
     return colaboradorMapper.map(colabRta);
   }
   public ColaboradorDTO buscarXIdJPA(Long colaboradorId, EntityManager em){
@@ -70,9 +76,35 @@ public class Fachada implements FachadaColaboradores{
     Colaborador colaborador = em.find(Colaborador.class, colaboradorId);
     colaborador.setPuntos(puntosCalculados);
     em.getTransaction().commit();
+    this.puntosTotal.increment(puntosCalculados);
     return puntosCalculados;
   }
 
+  public void setRegistry(PrometheusMeterRegistry registry){
+    this.registry = registry;
+
+    var puntosPromedioNoCounter = this.puntosTotal.count() / this.cantidadColaboradores.count();
+    this.puntosPromedio.increment(puntosPromedioNoCounter);
+
+    this.cantidadColaboradores = Counter.builder("app.colaboradores.counter").
+            description("Cantidad de colaboradores").register(registry);
+    this.puntosTotal = Counter.builder("app.puntos.totales").
+            description("Cantidad de puntos totales").register(registry);
+    this.puntosPromedio = Counter.builder("app.puntos.promedio")
+            .description("Puntos promedio").register(registry);
+  }
+
+  @Override
+  public void setLogisticaProxy(FachadaLogistica logistica) {
+    this.logisticaFachada = logistica;
+  }
+
+  @Override
+  public void setViandasProxy(FachadaViandas viandas) {
+    this.viandasFachada = viandas;
+  }
+
+  // Overrides de la fachada-----------------------------------------------------------------
   @Override
   public ColaboradorDTO agregar(ColaboradorDTO colaboradorDTO){
     Colaborador colaborador = new Colaborador();
@@ -118,15 +150,4 @@ public class Fachada implements FachadaColaboradores{
     return puntosCalculados;
   }
 
-
-
-  @Override
-  public void setLogisticaProxy(FachadaLogistica logistica) {
-    this.logisticaFachada = logistica;
-  }
-
-  @Override
-  public void setViandasProxy(FachadaViandas viandas) {
-    this.viandasFachada = viandas;
-  }
 }

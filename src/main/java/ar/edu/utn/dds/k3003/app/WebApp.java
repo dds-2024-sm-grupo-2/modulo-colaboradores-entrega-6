@@ -31,7 +31,6 @@ import io.micrometer.core.instrument.Gauge;
 
 public class WebApp{
     public static EntityManagerFactory entityManagerFactory;
-    private static final String TOKEN = "token";
 
     public static void main(String[] args){
 
@@ -53,6 +52,7 @@ public class WebApp{
         var URL_LOGISTICA = env.get("URL_LOGISTICA");
         var URL_HELADERAS = env.get("URL_HELADERAS");
         var URL_COLABORADORES = env.get("URL_COLABORADORES");
+        var TOKEN = env.get("TOKEN");
 
         int port = Integer.parseInt(env.getOrDefault("PORT", "8080"));
 
@@ -60,10 +60,9 @@ public class WebApp{
 
         final var registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
 
-        // Agregar aca cualquier tag que aplique a todas las métrivas de la app
         registry.config().commonTags("app", "metrics-sample");
 
-        // Metricas de la JVM
+            //Metricas de la JVM
 
         try (var jvmGcMetrics = new JvmGcMetrics();
              var jvmHeapPressureMetrics = new JvmHeapPressureMetrics()) {
@@ -74,29 +73,28 @@ public class WebApp{
         new ProcessorMetrics().bindTo(registry);
         new FileDescriptorMetrics().bindTo(registry);
 
-        // Metricas custom
+        final var micrometerPlugin = new MicrometerPlugin(config -> config.registry = registry);
 
-        Gauge.builder("myapp_random", () -> (int)(Math.random() * 1000))
-                .description("Random number from My-Application.")
-                .strongReference(true)
-                .register(registry);
-
-        // Seteamos el registro dentro de la config de Micrometer
-
-        final var micrometerPlugin =
-                new MicrometerPlugin(config -> config.registry = registry);
         // Endpoints------------------------------------------------------------------
 
-        var app = Javalin.create()
+        var app = Javalin.create(cf -> {cf.registerPlugin(micrometerPlugin); }).start(port);
 
-        .get("/", ctx -> ctx.result("Hola Mundo"))
-        .post("/colaboradores", colabController::agregar)
-        .get("/colaboradores/{colaboradorID}", colabController::buscar)
-        .get("/colaboradores/{colaboradorID}/puntos", colabController::puntos)
-        .patch("/colaboradores/{colabID}", colabController::cambiarFormas)
-        .put("/formula", colabController::actualizar)
-        .delete("/cleandb", colabController::borrar)
-        .start(port);
+        app.get("/", ctx -> ctx.result("Modulo Colaboradores - Diseño de Sistemas 2024"));
+        app.post("/colaboradores", colabController::agregar);
+        app.get("/colaboradores/{colaboradorID}", colabController::buscar);
+        app.get("/colaboradores/{colaboradorID}/puntos", colabController::puntos);
+        app.patch("/colaboradores/{colabID}", colabController::cambiarFormas);
+        app.put("/formula", colabController::actualizar);
+        app.delete("/cleandb", colabController::borrar);
+        app.get("/metrics", ctx -> {
+            var auth = ctx.header("Authorization");
+
+            if (auth != null && auth.intern() == "Bearer " + TOKEN) {
+                ctx.contentType("text/plain; version=0.0.4").result(registry.scrape());
+            }else{
+                ctx.status(401).json("unauthorized access");
+            }
+        });
     }
     public static ObjectMapper createObjectMapper() {
         var objectMapper = new ObjectMapper();
