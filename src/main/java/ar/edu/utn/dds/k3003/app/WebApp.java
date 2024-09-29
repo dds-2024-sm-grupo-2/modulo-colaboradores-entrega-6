@@ -87,7 +87,7 @@ public class WebApp{
                 new MicrometerPlugin(config -> config.registry = registry);
         // Endpoints------------------------------------------------------------------
 
-        var app = Javalin.create(cf -> { cf.plugins.register(micrometerPlugin); })
+        var app = Javalin.create()
 
         .get("/", ctx -> ctx.result("Hola Mundo"))
         .post("/colaboradores", colabController::agregar)
