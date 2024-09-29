@@ -26,11 +26,11 @@ import io.micrometer.core.instrument.binder.system.FileDescriptorMetrics;
 import io.micrometer.core.instrument.binder.system.ProcessorMetrics;
 import io.micrometer.prometheusmetrics.PrometheusConfig;
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
-import io.micrometer.core.instrument.Gauge;
 
 
 public class WebApp{
     public static EntityManagerFactory entityManagerFactory;
+    public static final String TOKEN = "token";
 
     public static void main(String[] args){
 
@@ -52,7 +52,6 @@ public class WebApp{
         var URL_LOGISTICA = env.get("URL_LOGISTICA");
         var URL_HELADERAS = env.get("URL_HELADERAS");
         var URL_COLABORADORES = env.get("URL_COLABORADORES");
-        var TOKEN = env.get("TOKEN");
 
         int port = Integer.parseInt(env.getOrDefault("PORT", "8080"));
 
