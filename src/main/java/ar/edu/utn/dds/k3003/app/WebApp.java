@@ -96,22 +96,7 @@ public class WebApp{
         .patch("/colaboradores/{colabID}", colabController::cambiarFormas)
         .put("/formula", colabController::actualizar)
         .delete("/cleandb", colabController::borrar)
-        .get("/metrics", ctx -> {
-            // chequear el header de authorization y chequear el token bearer configurado
-
-            var auth = ctx.header("Authorization");
-
-            if (auth != null && auth.intern() == "Bearer " + TOKEN) {
-                ctx.contentType("text/plain; version=0.0.4")
-                        .result(registry.scrape());
-            } else {
-                // si el token no es el apropiado, devolver error,
-                // desautorizado
-                // este paso es necesario para que Grafana online
-                // permita el acceso
-                ctx.status(401).json("unauthorized access");
-            }
-        }).start(port);
+        .start(port);
     }
     public static ObjectMapper createObjectMapper() {
         var objectMapper = new ObjectMapper();
