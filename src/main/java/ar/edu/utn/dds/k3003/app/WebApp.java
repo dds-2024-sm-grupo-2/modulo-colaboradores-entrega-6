@@ -85,18 +85,18 @@ public class WebApp{
 
         final var micrometerPlugin =
                 new MicrometerPlugin(config -> config.registry = registry);
-
-        var app = Javalin.create(cf -> { cf.plugins.register(micrometerPlugin); }).start(port);
-
         // Endpoints------------------------------------------------------------------
-        app.get("/", ctx -> ctx.result("Hola Mundo"));
-        app.post("/colaboradores", colabController::agregar);
-        app.get("/colaboradores/{colaboradorID}", colabController::buscar);
-        app.get("/colaboradores/{colaboradorID}/puntos", colabController::puntos);
-        app.patch("/colaboradores/{colabID}", colabController::cambiarFormas);
-        app.put("/formula", colabController::actualizar);
-        app.delete("/cleandb", colabController::borrar);
-        app.get("/metrics", ctx -> {
+
+        var app = Javalin.create(cf -> { cf.plugins.register(micrometerPlugin); })
+
+        .get("/", ctx -> ctx.result("Hola Mundo"))
+        .post("/colaboradores", colabController::agregar)
+        .get("/colaboradores/{colaboradorID}", colabController::buscar)
+        .get("/colaboradores/{colaboradorID}/puntos", colabController::puntos)
+        .patch("/colaboradores/{colabID}", colabController::cambiarFormas)
+        .put("/formula", colabController::actualizar)
+        .delete("/cleandb", colabController::borrar)
+        .get("/metrics", ctx -> {
             // chequear el header de authorization y chequear el token bearer configurado
 
             var auth = ctx.header("Authorization");
@@ -111,7 +111,7 @@ public class WebApp{
                 // permita el acceso
                 ctx.status(401).json("unauthorized access");
             }
-        });
+        }).start(port);
     }
     public static ObjectMapper createObjectMapper() {
         var objectMapper = new ObjectMapper();
