@@ -83,15 +83,10 @@ public class Fachada implements FachadaColaboradores{
   public void setRegistry(PrometheusMeterRegistry registry){
     this.registry = registry;
 
-    var puntosPromedioNoCounter = this.puntosTotal.count() / this.cantidadColaboradores.count();
-    this.puntosPromedio.increment(puntosPromedioNoCounter);
-
     this.cantidadColaboradores = Counter.builder("app.colaboradores.counter").
             description("Cantidad de colaboradores").register(registry);
     this.puntosTotal = Counter.builder("app.puntos.totales").
             description("Cantidad de puntos totales").register(registry);
-    this.puntosPromedio = Counter.builder("app.puntos.promedio")
-            .description("Puntos promedio").register(registry);
   }
 
   @Override
