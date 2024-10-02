@@ -33,7 +33,6 @@ public class Fachada implements FachadaColaboradores{
   private PrometheusMeterRegistry registry;
   private Counter cantidadColaboradores;
   private Counter puntosTotal;
-  private Counter puntosPromedio;
 
   public Fachada(){
     this.colaboradorRepository = new ColaboradorRepository();
@@ -48,7 +47,7 @@ public class Fachada implements FachadaColaboradores{
     em.getTransaction().begin();
     Colaborador colabRta = this.colaboradorRepository.saveJPA(colaborador, em);
     em.getTransaction().commit();
-    this.cantidadColaboradores.increment();
+    cantidadColaboradores.increment();
     return colaboradorMapper.map(colabRta);
   }
   public ColaboradorDTO buscarXIdJPA(Long colaboradorId, EntityManager em){
@@ -76,7 +75,7 @@ public class Fachada implements FachadaColaboradores{
     Colaborador colaborador = em.find(Colaborador.class, colaboradorId);
     colaborador.setPuntos(puntosCalculados);
     em.getTransaction().commit();
-    this.puntosTotal.increment(puntosCalculados);
+    puntosTotal.increment(puntosCalculados);
     return puntosCalculados;
   }
 
