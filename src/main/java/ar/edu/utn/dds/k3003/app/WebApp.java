@@ -34,8 +34,6 @@ public class WebApp{
 
     public static void main(String[] args){
 
-        final var registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
-
         // WEBAPP---------------------------------------------------------------------------
 
         var env = System.getenv();
@@ -50,8 +48,6 @@ public class WebApp{
         fachada.setViandasProxy(new ViandasProxy(objectMapper));
         fachada.setLogisticaProxy(new LogisticaProxy(objectMapper));
 
-        fachada.setRegistry(registry);
-
         var URL_VIANDAS = env.get("URL_VIANDAS");
         var URL_LOGISTICA = env.get("URL_LOGISTICA");
         var URL_HELADERAS = env.get("URL_HELADERAS");
@@ -60,6 +56,8 @@ public class WebApp{
         int port = Integer.parseInt(env.getOrDefault("PORT", "8080"));
 
         // Metrics--------------------------------------------------------------------
+
+        final var registry = new PrometheusMeterRegistry(PrometheusConfig.DEFAULT);
 
         registry.config().commonTags("app", "metrics-sample");
 
@@ -75,6 +73,8 @@ public class WebApp{
         new FileDescriptorMetrics().bindTo(registry);
 
         final var micrometerPlugin = new MicrometerPlugin(config -> config.registry = registry);
+
+        fachada.setRegistry(registry);
 
         // Endpoints------------------------------------------------------------------
 
