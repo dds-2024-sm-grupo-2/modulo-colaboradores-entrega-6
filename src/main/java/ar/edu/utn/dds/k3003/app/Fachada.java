@@ -88,12 +88,6 @@ public class Fachada implements FachadaColaboradores{
             description("Cantidad de puntos totales").register(registry);
   }
 
-  public void resetearCounters(){
-    cantidadColaboradores.increment(cantidadColaboradores.count()*(-1));
-    puntosTotal.increment(puntosTotal.count()*(-1));
-
-  }
-
   @Override
   public void setLogisticaProxy(FachadaLogistica logistica) {
     this.logisticaFachada = logistica;

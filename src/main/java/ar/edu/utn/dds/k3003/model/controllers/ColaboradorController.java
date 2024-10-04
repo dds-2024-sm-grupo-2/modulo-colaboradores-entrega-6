@@ -93,9 +93,7 @@ public class ColaboradorController {
     public void borrar(Context ctx){
 
         entityManager.getTransaction().begin();
-        entityManager.createQuery("DELETE FROM Colaborador ").executeUpdate();
+        entityManager.createQuery("DELETE FROM Colaborador ");
         entityManager.getTransaction().commit();
-
-        fachada.resetearCounters();
     }
 }
