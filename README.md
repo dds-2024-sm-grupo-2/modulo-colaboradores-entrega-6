@@ -10,3 +10,5 @@ Contexto: https://docs.google.com/document/d/1vlYmWUJaKandhazZ8mAKcG8t91IAZ-81Wh
 Entrega 3: https://docs.google.com/document/d/1xxyOkP0KZS-gfQZb9MCanJwkxXvRIHLzzPb8GrpGOLM/edit
 
 URL del despliegue: https://modulo-colaboradores-entrega-4.onrender.com
+
+URL Metricas: https://santinocarrizo04.grafana.net/public-dashboards/6637eee80ebb4f6282798e7048bf3bf1
