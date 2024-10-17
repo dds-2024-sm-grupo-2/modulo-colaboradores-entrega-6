@@ -10,10 +10,10 @@
         <class>ar.edu.utn.dds.k3003.model.Colaborador</class>
 
         <properties>
-            <property name="javax.persistence.jdbc.user" value="tp_dds_e4_user"/>
-            <property name="javax.persistence.jdbc.password" value="JgUEiXKoJ6jO672dWRiFPK9Sbaq6iOOo" />
+            <property name="javax.persistence.jdbc.user" value="santinocarrizo"/>
+            <property name="javax.persistence.jdbc.password" value="2A7zga6ujI9H4UGGcCCkTFoKyanW4R3p" />
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://dpg-cromtepu0jms73cbun70-a.oregon-postgres.render.com:5432/tp_dds_e4"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://dpg-cs8om7g8fa8c73cfrcj0-a.oregon-postgres.render.com:5432/tp24db_q5br"/>
 
             <property name="hibernate.default_schema" value="public"/>
             <property name="hibernate.hbm2ddl.auto" value="create"/>
