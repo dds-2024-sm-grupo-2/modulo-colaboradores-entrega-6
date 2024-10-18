@@ -105,6 +105,19 @@ public class Fachada implements FachadaColaboradores{
     return resul;
   }
 
+  public void actualizarPesosPuntosJPA(
+          Double pesosDonados,
+          Double viandasDistribuidas,
+          Double viandasDonadas,
+          Double tarjetasRepartidas,
+          Double heladerasActivas,
+          Double reparacionJPA) {
+    this.setViandasDistribuidasPeso(viandasDistribuidas);
+    this.setViandasDonadasPeso(viandasDonadas);
+    this.setDineroDonadoPeso(pesosDonados);
+    this.setArregloPeso(reparacionJPA);
+  }
+
   public void setRegistry(PrometheusMeterRegistry registry){
     this.registry = registry;
 

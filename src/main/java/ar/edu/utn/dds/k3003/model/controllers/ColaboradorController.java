@@ -85,9 +85,9 @@ public class ColaboradorController {
 
     public void actualizar(Context ctx){
         var puntosBody = ctx.bodyAsClass(PuntosDTO.class);
-        this.fachada.actualizarPesosPuntos(puntosBody.getPesosDonados(), puntosBody.getViandasDistribuidas(),
+        this.fachada.actualizarPesosPuntosJPA(puntosBody.getPesosDonados(), puntosBody.getViandasDistribuidas(),
                 puntosBody.getViandasDonadas(), puntosBody.getTarjetasRepartidas(),
-                puntosBody.getHeladerasActivas());
+                puntosBody.getHeladerasActivas(), puntosBody.getArregloPeso());
         ctx.status(HttpStatus.OK);
         ctx.result("Formula actualizada correctamente");
     }

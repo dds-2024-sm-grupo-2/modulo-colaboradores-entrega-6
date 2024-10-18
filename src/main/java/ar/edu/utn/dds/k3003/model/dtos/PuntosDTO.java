@@ -7,6 +7,7 @@ public class PuntosDTO {
     private Double viandasDistribuidas;
     private Double tarjetasRepartidas;
     private Double heladerasActivas;
+    private Double arregloPeso;
 
     public Double getPesosDonados() {
         return pesosDonados;
@@ -46,5 +47,13 @@ public class PuntosDTO {
 
     public void setHeladerasActivas(Double heladerasActivas) {
         this.heladerasActivas = heladerasActivas;
+    }
+
+    public Double getArregloPeso() {
+        return arregloPeso;
+    }
+
+    public void setArregloPeso(Double arregloPeso) {
+        this.arregloPeso = arregloPeso;
     }
 }
