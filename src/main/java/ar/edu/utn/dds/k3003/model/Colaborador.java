@@ -21,6 +21,12 @@ public class Colaborador {
   @Column(name = "forma_de_colaborar")
   private List<FormaDeColaborarEnum> formas;
 
+  @Column
+  private Double dineroDonado;
+
+  @Column
+  private Double heladerasReparadas;
+
   public Colaborador() {}
   public Long getId() {
     return id;
@@ -52,5 +58,21 @@ public class Colaborador {
 
   public void setFormas(List<FormaDeColaborarEnum> formas) {
     this.formas = formas;
+  }
+
+  public Double getDineroDonado() {
+    return dineroDonado;
+  }
+
+  public void setDineroDonado(Double dineroDonado) {
+    this.dineroDonado = dineroDonado;
+  }
+
+  public Double getHeladerasReparadas() {
+    return heladerasReparadas;
+  }
+
+  public void setHeladerasReparadas(Double heladerasReparadas) {
+    this.heladerasReparadas = heladerasReparadas;
   }
 }

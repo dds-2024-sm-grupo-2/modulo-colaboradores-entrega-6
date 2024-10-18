@@ -2,7 +2,9 @@ package ar.edu.utn.dds.k3003.model.controllers;
 
 import ar.edu.utn.dds.k3003.app.Fachada;
 import ar.edu.utn.dds.k3003.facades.dtos.ColaboradorDTO;
+import ar.edu.utn.dds.k3003.facades.dtos.HeladeraDTO;
 import ar.edu.utn.dds.k3003.model.Colaborador;
+import ar.edu.utn.dds.k3003.model.dtos.DineroDTO;
 import ar.edu.utn.dds.k3003.model.dtos.FormasDeColaborarDTO;
 import ar.edu.utn.dds.k3003.model.dtos.PuntosDTO;
 import ar.edu.utn.dds.k3003.model.dtos.PuntosDeColaboradorDTO;
@@ -93,7 +95,29 @@ public class ColaboradorController {
     public void borrar(Context ctx){
 
         entityManager.getTransaction().begin();
-        entityManager.createQuery("DELETE FROM Colaborador ");
+        entityManager.createQuery("DELETE FROM Colaborador");
         entityManager.getTransaction().commit();
     }
+
+    public void falla(Context ctx){
+        var heladera = ctx.bodyAsClass(HeladeraDTO.class);
+    }
+
+    public void donacionDinero(Context ctx){
+        var idString = ctx.pathParam("colabID");
+        Long id = Long.parseLong(idString);
+        var dineroClass = ctx.bodyAsClass(DineroDTO.class);
+
+        var resultado = this.fachada.donarDinero(id, dineroClass, entityManager);
+
+        if(resultado){
+            ctx.status(HttpStatus.OK);
+            ctx.json(dineroClass);
+        }
+        else{
+            ctx.status(HttpStatus.PRECONDITION_FAILED);
+            ctx.result("El colaborador no es donador");
+        }
+    }
+
 }

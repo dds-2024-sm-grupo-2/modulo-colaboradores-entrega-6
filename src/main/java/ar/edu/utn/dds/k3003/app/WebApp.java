@@ -87,6 +87,8 @@ public class WebApp{
         app.patch("/colaboradores/{colabID}", colabController::cambiarFormas);
         app.put("/formula", colabController::actualizar);
         app.delete("/cleandb", colabController::borrar);
+        app.post("/fallas", colabController::falla);
+        app.post("/dinero/{colabID}", colabController::donacionDinero);
         app.get("/metrics", ctx -> {
             var auth = ctx.header("Authorization");
 

@@ -6,6 +6,7 @@ import ar.edu.utn.dds.k3003.facades.FachadaViandas;
 import ar.edu.utn.dds.k3003.facades.dtos.ColaboradorDTO;
 import ar.edu.utn.dds.k3003.facades.dtos.FormaDeColaborarEnum;
 import ar.edu.utn.dds.k3003.model.Colaborador;
+import ar.edu.utn.dds.k3003.model.dtos.DineroDTO;
 import ar.edu.utn.dds.k3003.repositorios.ColaboradorMapper;
 import ar.edu.utn.dds.k3003.repositorios.ColaboradorRepository;
 
@@ -25,7 +26,7 @@ public class Fachada implements FachadaColaboradores{
 
   private final ColaboradorRepository colaboradorRepository;
   private final ColaboradorMapper colaboradorMapper;
-  private Double viandasDistribuidasPeso, viandasDonadasPeso;
+  private Double viandasDistribuidasPeso, viandasDonadasPeso, dineroDonadoPeso, arregloPeso;
   private FachadaViandas viandasFachada;
   private FachadaLogistica logisticaFachada;
   private static AtomicLong seqId = new AtomicLong();
@@ -43,6 +44,9 @@ public class Fachada implements FachadaColaboradores{
     Colaborador colaborador = new Colaborador();
     colaborador.setNombre(colaboradorDTO.getNombre());
     colaborador.setFormas(colaboradorDTO.getFormas());
+    colaborador.setPuntos((double)0);
+    colaborador.setDineroDonado((double)0);
+    colaborador.setHeladerasReparadas((double)0);
 
     em.getTransaction().begin();
     Colaborador colabRta = this.colaboradorRepository.saveJPA(colaborador, em);
@@ -73,10 +77,32 @@ public class Fachada implements FachadaColaboradores{
                     * viandasFachada.viandasDeColaborador(colaboradorId, mes, anio).size());
     em.getTransaction().begin();
     Colaborador colaborador = em.find(Colaborador.class, colaboradorId);
+    puntosCalculados = puntosCalculados + (colaborador.getDineroDonado() * dineroDonadoPeso)
+            + (colaborador.getHeladerasReparadas() * arregloPeso);
     colaborador.setPuntos(puntosCalculados);
     em.getTransaction().commit();
     puntosTotal.increment(puntosCalculados);
     return puntosCalculados;
+  }
+
+  public boolean donarDinero(Long id , DineroDTO dineroDonado, EntityManager em){
+
+    Double dinero = dineroDonado.getDineroDonado();
+    boolean resul;
+
+    em.getTransaction().begin();
+    Colaborador colab = em.find(Colaborador.class, id);
+    if(true){
+    Double dineroAnterior = colab.getDineroDonado();
+    Double dineroNuevo = dineroAnterior + dinero;
+    colab.setDineroDonado(dineroNuevo);
+    resul = true;
+    }else{
+      resul = false;
+    }
+    em.getTransaction().commit();
+
+    return resul;
   }
 
   public void setRegistry(PrometheusMeterRegistry registry){
@@ -129,6 +155,7 @@ public class Fachada implements FachadaColaboradores{
       Double heladerasActivas) {
     this.setViandasDistribuidasPeso(viandasDistribuidas);
     this.setViandasDonadasPeso(viandasDonadas);
+    this.setDineroDonadoPeso(pesosDonados);
   }
 
   @Override
