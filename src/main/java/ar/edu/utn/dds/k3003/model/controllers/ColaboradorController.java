@@ -4,10 +4,7 @@ import ar.edu.utn.dds.k3003.app.Fachada;
 import ar.edu.utn.dds.k3003.facades.dtos.ColaboradorDTO;
 import ar.edu.utn.dds.k3003.facades.dtos.HeladeraDTO;
 import ar.edu.utn.dds.k3003.model.Colaborador;
-import ar.edu.utn.dds.k3003.model.dtos.DineroDTO;
-import ar.edu.utn.dds.k3003.model.dtos.FormasDeColaborarDTO;
-import ar.edu.utn.dds.k3003.model.dtos.PuntosDTO;
-import ar.edu.utn.dds.k3003.model.dtos.PuntosDeColaboradorDTO;
+import ar.edu.utn.dds.k3003.model.dtos.*;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 
@@ -25,7 +22,7 @@ public class ColaboradorController {
     }
 
     public void agregar(Context ctx){
-        var colabDTO = ctx.bodyAsClass(ColaboradorDTO.class);
+        var colabDTO = ctx.bodyAsClass(MiColaboradorDTO.class);
         var rtaDTO = this.fachada.agregarJPA(colabDTO, entityManager);
         ctx.status(HttpStatus.CREATED);
         ctx.json(rtaDTO);

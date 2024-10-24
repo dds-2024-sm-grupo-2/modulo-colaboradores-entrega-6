@@ -1,6 +1,8 @@
 package ar.edu.utn.dds.k3003.model;
 
 import ar.edu.utn.dds.k3003.facades.dtos.FormaDeColaborarEnum;
+import ar.edu.utn.dds.k3003.model.enums.MisFormasDeColaborar;
+
 import java.util.List;
 
 import javax.persistence.*;
@@ -15,11 +17,11 @@ public class Colaborador {
   @Column
   private Double puntos = (double) 0;
 
-  @ElementCollection(targetClass = FormaDeColaborarEnum.class)
+  @ElementCollection(targetClass = MisFormasDeColaborar.class)
   @Enumerated(EnumType.STRING) // Puedes usar EnumType.ORDINAL si prefieres almacenar índices
   @CollectionTable(name = "colaborador_formas_de_colaborar", joinColumns = @JoinColumn(name = "colaborador_id"))
   @Column(name = "forma_de_colaborar")
-  private List<FormaDeColaborarEnum> formas;
+  private List<MisFormasDeColaborar> formas;
 
   @Column
   private Double dineroDonado;
@@ -52,11 +54,11 @@ public class Colaborador {
     this.puntos = puntos;
   }
 
-  public List<FormaDeColaborarEnum> getFormas() {
+  public List<MisFormasDeColaborar> getFormas() {
     return formas;
   }
 
-  public void setFormas(List<FormaDeColaborarEnum> formas) {
+  public void setFormas(List<MisFormasDeColaborar> formas) {
     this.formas = formas;
   }
 

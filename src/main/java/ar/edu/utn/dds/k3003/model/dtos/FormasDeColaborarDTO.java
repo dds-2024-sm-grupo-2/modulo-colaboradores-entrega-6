@@ -1,18 +1,19 @@
 package ar.edu.utn.dds.k3003.model.dtos;
 
-import ar.edu.utn.dds.k3003.facades.dtos.FormaDeColaborarEnum;
+
+import ar.edu.utn.dds.k3003.model.enums.MisFormasDeColaborar;
 
 import java.util.List;
 
 public class FormasDeColaborarDTO {
 
-    private List<FormaDeColaborarEnum> formas;
+    private List<MisFormasDeColaborar> formas;
 
-    public List<FormaDeColaborarEnum> getFormas() {
+    public List<MisFormasDeColaborar> getFormas() {
         return formas;
     }
 
-    public void setFormas(List<FormaDeColaborarEnum> formas) {
+    public void setFormas(List<MisFormasDeColaborar> formas) {
         this.formas = formas;
     }
 }

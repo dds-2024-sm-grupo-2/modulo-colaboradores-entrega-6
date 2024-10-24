@@ -7,9 +7,12 @@ import ar.edu.utn.dds.k3003.facades.dtos.ColaboradorDTO;
 import ar.edu.utn.dds.k3003.facades.dtos.FormaDeColaborarEnum;
 import ar.edu.utn.dds.k3003.model.Colaborador;
 import ar.edu.utn.dds.k3003.model.dtos.DineroDTO;
+import ar.edu.utn.dds.k3003.model.dtos.MiColaboradorDTO;
+import ar.edu.utn.dds.k3003.model.enums.MisFormasDeColaborar;
 import ar.edu.utn.dds.k3003.repositorios.ColaboradorMapper;
 import ar.edu.utn.dds.k3003.repositorios.ColaboradorRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -40,7 +43,7 @@ public class Fachada implements FachadaColaboradores{
     this.colaboradorMapper = new ColaboradorMapper();
   }
 
-  public ColaboradorDTO agregarJPA(ColaboradorDTO colaboradorDTO, EntityManager em) {
+  public MiColaboradorDTO agregarJPA(MiColaboradorDTO colaboradorDTO, EntityManager em) {
     Colaborador colaborador = new Colaborador();
     colaborador.setNombre(colaboradorDTO.getNombre());
     colaborador.setFormas(colaboradorDTO.getFormas());
@@ -54,15 +57,15 @@ public class Fachada implements FachadaColaboradores{
     cantidadColaboradores.increment();
     return colaboradorMapper.map(colabRta);
   }
-  public ColaboradorDTO buscarXIdJPA(Long colaboradorId, EntityManager em){
+  public MiColaboradorDTO buscarXIdJPA(Long colaboradorId, EntityManager em){
     em.getTransaction().begin();
     Colaborador colab = colaboradorRepository.findByIdJPA(colaboradorId, em);
     em.getTransaction().commit();
     return colaboradorMapper.map(colab);
   }
 
-  public ColaboradorDTO modificarJPA(
-          Long colaboradorId, List<FormaDeColaborarEnum> nuevasFormasDeColaborar, EntityManager em){
+  public MiColaboradorDTO modificarJPA(
+          Long colaboradorId, List<MisFormasDeColaborar> nuevasFormasDeColaborar, EntityManager em){
     em.getTransaction().begin();
     colaboradorRepository.modificarFormasDeJPA(colaboradorId, nuevasFormasDeColaborar, em);
     em.getTransaction().commit();
@@ -137,25 +140,28 @@ public class Fachada implements FachadaColaboradores{
     this.viandasFachada = viandas;
   }
 
-  // Overrides de la fachada-----------------------------------------------------------------
+  // Overrides de la fachada-------------------------------------------------------------------------------------
+  //-------------------------------------------------------------------------------------------------------------
   @Override
   public ColaboradorDTO agregar(ColaboradorDTO colaboradorDTO){
     Colaborador colaborador = new Colaborador();
     colaborador.setNombre(colaboradorDTO.getNombre());
-    colaborador.setFormas(colaboradorDTO.getFormas());
+    //colaborador.setFormas(colaboradorDTO.getFormas());
     Colaborador colaboradorGuardado = this.colaboradorRepository.save(colaborador);
     colaboradorDTO.setId(colaboradorGuardado.getId());
-    return colaboradorMapper.map(colaboradorGuardado);
+    return colaboradorDTO;
   }
   @Override
   public ColaboradorDTO buscarXId(Long colaboradorId) {
     Colaborador colab = colaboradorRepository.findById(colaboradorId);
-    return colaboradorMapper.map(colab);
+    List<FormaDeColaborarEnum> formas = new ArrayList<>();
+    formas.add(FormaDeColaborarEnum.DONADOR);
+    return new ColaboradorDTO(colab.getNombre(),formas);
   }
   @Override
   public ColaboradorDTO modificar(
           Long colaboradorId, List<FormaDeColaborarEnum> nuevasFormasDeColaborar) {
-          colaboradorRepository.modificarFormasDe(colaboradorId, nuevasFormasDeColaborar);
+          //colaboradorRepository.modificarFormasDe(colaboradorId, nuevasFormasDeColaborar);
           return this.buscarXId(colaboradorId);
   }
 
@@ -174,13 +180,13 @@ public class Fachada implements FachadaColaboradores{
   @Override
   public Double puntos(Long colaboradorId) {
     ColaboradorDTO colaboradorDTO = this.buscarXId(colaboradorId);
-    Colaborador colaborador = colaboradorMapper.pam(colaboradorDTO);
+    //Colaborador colaborador = colaboradorMapper.pam(colaboradorDTO);
     Double puntosCalculados =
         ((this.viandasDistribuidasPeso
                 * logisticaFachada.trasladosDeColaborador(colaboradorId, 1, 2024).size()))
             + (this.viandasDonadasPeso
                 * viandasFachada.viandasDeColaborador(colaboradorId, 1, 2024).size());
-    colaborador.setPuntos(puntosCalculados);
+    //colaborador.setPuntos(puntosCalculados);
     return puntosCalculados;
   }
 
