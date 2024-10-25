@@ -9,6 +9,8 @@ import ar.edu.utn.dds.k3003.facades.FachadaViandas;
 import ar.edu.utn.dds.k3003.facades.dtos.*;
 import ar.edu.utn.dds.k3003.facades.dtos.ColaboradorDTO;
 import ar.edu.utn.dds.k3003.model.Colaborador;
+import ar.edu.utn.dds.k3003.model.dtos.MiColaboradorDTO;
+import ar.edu.utn.dds.k3003.model.enums.MisFormasDeColaborar;
 import ar.edu.utn.dds.k3003.repositorios.ColaboradorMapper;
 import ar.edu.utn.dds.k3003.repositorios.ColaboradorRepository;
 import ar.edu.utn.dds.k3003.tests.TestTP;
@@ -50,15 +52,19 @@ public class ColaboradoresTest implements TestTP<FachadaColaboradores> {
 
     Colaborador colaborador1 = new Colaborador();
     colaborador1.setNombre(this.nombre1);
-    ColaboradorDTO colaborador1DTO = colabMapper.map(colaborador1);
-    ColaboradorDTO rtaDTO = instanciaFachada.agregar(colaborador1DTO);
+    MiColaboradorDTO colaborador1DTO = colabMapper.map(colaborador1);
+    List<FormaDeColaborarEnum> formas = new ArrayList<>();
+    ColaboradorDTO newColab = new ColaboradorDTO(colaborador1DTO.getNombre(), formas);
+    ColaboradorDTO rtaDTO = instanciaFachada.agregar(newColab);
     assertNotNull(rtaDTO.getId());
     System.out.print(rtaDTO.getId() + "\n");
 
     Colaborador colaborador2 = new Colaborador();
     colaborador2.setNombre("Pepe");
-    ColaboradorDTO colab2DTO = colabMapper.map(colaborador2);
-    ColaboradorDTO rtaDTO2 = instanciaFachada.agregar(colab2DTO);
+    MiColaboradorDTO colab2DTO = colabMapper.map(colaborador2);
+    List<FormaDeColaborarEnum> formas1 = new ArrayList<>();
+    ColaboradorDTO newColab1 = new ColaboradorDTO(colab2DTO.getNombre(), formas1);
+    ColaboradorDTO rtaDTO2 = instanciaFachada.agregar(newColab1);
     assertNotNull(rtaDTO2.getId());
     System.out.print(rtaDTO2.getId() + "\n");
   }
@@ -69,8 +75,10 @@ public class ColaboradoresTest implements TestTP<FachadaColaboradores> {
 
     Colaborador colaborador1 = new Colaborador();
     colaborador1.setNombre(this.nombre1);
-    ColaboradorDTO colaborador1DTO = colabMapper.map(colaborador1);
-    ColaboradorDTO rtaDTO = instanciaFachada.agregar(colaborador1DTO);
+    MiColaboradorDTO colaborador1DTO = colabMapper.map(colaborador1);
+    List<FormaDeColaborarEnum> formas = new ArrayList<>();
+    ColaboradorDTO newColab = new ColaboradorDTO(colaborador1DTO.getNombre(), formas);
+    ColaboradorDTO rtaDTO = instanciaFachada.agregar(newColab);
     ColaboradorDTO rtaColaboradorDTO = instanciaFachada.buscarXId(rtaDTO.getId());
     assertEquals(rtaColaboradorDTO.getId(), rtaDTO.getId());
     assertEquals(rtaColaboradorDTO.getNombre(), rtaDTO.getNombre());
@@ -101,8 +109,10 @@ public class ColaboradoresTest implements TestTP<FachadaColaboradores> {
 
     Colaborador colaborador1 = new Colaborador();
     colaborador1.setNombre(this.nombre1);
-    ColaboradorDTO colaborador1DTO = colabMapper.map(colaborador1);
-    ColaboradorDTO rtaDTO = instanciaFachada.agregar(colaborador1DTO);
+    MiColaboradorDTO colaborador1DTO = colabMapper.map(colaborador1);
+    List<FormaDeColaborarEnum> formas = new ArrayList<>();
+    ColaboradorDTO newColab = new ColaboradorDTO(colaborador1DTO.getNombre(), formas);
+    ColaboradorDTO rtaDTO = instanciaFachada.agregar(newColab);
     List<FormaDeColaborarEnum> nuevasFormas = new ArrayList<>();
     nuevasFormas.add(FormaDeColaborarEnum.DONADOR);
     nuevasFormas.add(FormaDeColaborarEnum.TRANSPORTADOR);
@@ -120,8 +130,10 @@ public class ColaboradoresTest implements TestTP<FachadaColaboradores> {
 
     Colaborador colaborador1 = new Colaborador();
     colaborador1.setNombre(this.nombre1);
-    ColaboradorDTO colaborador1DTO = colabMapper.map(colaborador1);
-    ColaboradorDTO rtaDTO = instanciaFachada.agregar(colaborador1DTO);
+    MiColaboradorDTO colaborador1DTO = colabMapper.map(colaborador1);
+    List<FormaDeColaborarEnum> formas = new ArrayList<>();
+    ColaboradorDTO newColab = new ColaboradorDTO(colaborador1DTO.getNombre(), formas);
+    ColaboradorDTO rtaDTO = instanciaFachada.agregar(newColab);
     instanciaFachada.actualizarPesosPuntos(0.0, pesoDistribuidas, pesoDonadas, 0.0, 0.0);
 
     when(logistica.trasladosDeColaborador(rtaDTO.getId(), 1, 2024)).thenReturn(List.of());
