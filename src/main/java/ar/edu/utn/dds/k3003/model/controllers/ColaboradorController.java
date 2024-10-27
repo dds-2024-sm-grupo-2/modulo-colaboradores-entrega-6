@@ -91,11 +91,9 @@ public class ColaboradorController {
     }
 
     public void falla(Context ctx){
-        String parametroString = ctx.pathParam("id");
-        Long colabID = Long.parseLong(parametroString);
         var incidenteDTO = ctx.bodyAsClass(IncidenteDTO.class);
 
-        fachada.falla(colabID, incidenteDTO, entityManager);
+        fachada.falla(incidenteDTO, entityManager);
     }
 
     public void donacionDinero(Context ctx){

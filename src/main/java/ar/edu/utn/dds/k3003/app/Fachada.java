@@ -13,6 +13,7 @@ import ar.edu.utn.dds.k3003.model.dtos.EventoDTO;
 import ar.edu.utn.dds.k3003.model.dtos.IncidenteDTO;
 import ar.edu.utn.dds.k3003.model.dtos.MiColaboradorDTO;
 import ar.edu.utn.dds.k3003.model.enums.MisFormasDeColaborar;
+import ar.edu.utn.dds.k3003.model.enums.TipoIncidenteEnum;
 import ar.edu.utn.dds.k3003.repositorios.ColaboradorMapper;
 import ar.edu.utn.dds.k3003.repositorios.ColaboradorRepository;
 
@@ -147,17 +148,16 @@ public class Fachada implements FachadaColaboradores{
         }
   }
 
-  public void falla(Long id, IncidenteDTO incidenteDTO, EntityManager em){
+  public void falla(IncidenteDTO incidenteDTO, EntityManager em){
 
-    em.getTransaction().begin();
-    Colaborador colab = em.find(Colaborador.class, id);
-    colab.setHeladerasReparadas((double)1);
-    em.getTransaction().commit();
+    TipoIncidenteEnum tipo = incidenteDTO.getTipoIncidente();
 
-    //TODO:
-    //Detectar el tipo de falla / alerta
-    //Elegir al colaborador que sea tecnico y este suscrito a la heladera
-    //Reparar la heladera (mensaje a heladera y actualizar BD al colab)
+    if(tipo == TipoIncidenteEnum.FALLA_TECNICA){
+      //elegir colab tecnico y ??suscripto??
+      //avisar a heladera (mensaje)
+      //actualizar DB a colab elegido
+    }
+
   }
 
   public void setRegistry(PrometheusMeterRegistry registry){

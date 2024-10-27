@@ -89,7 +89,7 @@ public class WebApp{
         app.get("/colaboradores/{colaboradorID}/puntos", colabController::puntos);
         app.patch("/colaboradores/{colabID}", colabController::cambiarFormas);
         app.put("/formula", colabController::actualizar);
-        app.post("/fallas/{id}", colabController::falla);
+        app.post("/fallas", colabController::falla);
         app.post("/dinero/{colabID}", colabController::donacionDinero);
         app.post("/suscribe/{colabID}", colabController::suscribir);
         app.post("/evento",colabController::evento);
