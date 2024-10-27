@@ -10,6 +10,7 @@ import ar.edu.utn.dds.k3003.facades.dtos.HeladeraDTO;
 import ar.edu.utn.dds.k3003.model.Colaborador;
 import ar.edu.utn.dds.k3003.model.dtos.DineroDTO;
 import ar.edu.utn.dds.k3003.model.dtos.EventoDTO;
+import ar.edu.utn.dds.k3003.model.dtos.IncidenteDTO;
 import ar.edu.utn.dds.k3003.model.dtos.MiColaboradorDTO;
 import ar.edu.utn.dds.k3003.model.enums.MisFormasDeColaborar;
 import ar.edu.utn.dds.k3003.repositorios.ColaboradorMapper;
@@ -146,7 +147,13 @@ public class Fachada implements FachadaColaboradores{
         }
   }
 
-  public void falla(HeladeraDTO heladera, EntityManager em){
+  public void falla(Long id, IncidenteDTO incidenteDTO, EntityManager em){
+
+    em.getTransaction().begin();
+    Colaborador colab = em.find(Colaborador.class, id);
+    colab.setHeladerasReparadas((double)1);
+    em.getTransaction().commit();
+
     //TODO:
     //Detectar el tipo de falla / alerta
     //Elegir al colaborador que sea tecnico y este suscrito a la heladera
