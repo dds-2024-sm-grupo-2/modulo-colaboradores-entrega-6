@@ -1,17 +1,21 @@
 package ar.edu.utn.dds.k3003.app;
 
+import ar.edu.utn.dds.k3003.clients.HeladeraProxy;
 import ar.edu.utn.dds.k3003.facades.FachadaLogistica;
 import ar.edu.utn.dds.k3003.facades.FachadaColaboradores;
 import ar.edu.utn.dds.k3003.facades.FachadaViandas;
 import ar.edu.utn.dds.k3003.facades.dtos.ColaboradorDTO;
 import ar.edu.utn.dds.k3003.facades.dtos.FormaDeColaborarEnum;
+import ar.edu.utn.dds.k3003.facades.dtos.HeladeraDTO;
 import ar.edu.utn.dds.k3003.model.Colaborador;
 import ar.edu.utn.dds.k3003.model.dtos.DineroDTO;
+import ar.edu.utn.dds.k3003.model.dtos.EventoDTO;
 import ar.edu.utn.dds.k3003.model.dtos.MiColaboradorDTO;
 import ar.edu.utn.dds.k3003.model.enums.MisFormasDeColaborar;
 import ar.edu.utn.dds.k3003.repositorios.ColaboradorMapper;
 import ar.edu.utn.dds.k3003.repositorios.ColaboradorRepository;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
@@ -32,6 +36,7 @@ public class Fachada implements FachadaColaboradores{
   private Double viandasDistribuidasPeso, viandasDonadasPeso, dineroDonadoPeso, arregloPeso;
   private FachadaViandas viandasFachada;
   private FachadaLogistica logisticaFachada;
+  private HeladeraProxy heladerasFachada;
   private static AtomicLong seqId = new AtomicLong();
 
   private PrometheusMeterRegistry registry;
@@ -121,6 +126,20 @@ public class Fachada implements FachadaColaboradores{
     this.setArregloPeso(reparacionJPA);
   }
 
+  public void suscribir(Long id, HeladeraDTO heladeraDTO) throws IOException {
+
+    HeladeraDTO dtoRTA = heladerasFachada.suscribir(id, heladeraDTO);
+  }
+
+  public void evento(EventoDTO evento){
+
+    switch (evento.getEventType()){
+      case 1:
+        evento.getHeladera().getCantidadDeViandas();
+    }
+
+  }
+
   public void setRegistry(PrometheusMeterRegistry registry){
     this.registry = registry;
 
@@ -139,6 +158,11 @@ public class Fachada implements FachadaColaboradores{
   public void setViandasProxy(FachadaViandas viandas) {
     this.viandasFachada = viandas;
   }
+
+  public void setHeladerasProxy(HeladeraProxy heladeras) {
+    this.heladerasFachada = heladeras;
+  }
+
 
   // Overrides de la fachada-------------------------------------------------------------------------------------
   //-------------------------------------------------------------------------------------------------------------
@@ -189,5 +213,4 @@ public class Fachada implements FachadaColaboradores{
     //colaborador.setPuntos(puntosCalculados);
     return puntosCalculados;
   }
-
 }

@@ -10,6 +10,7 @@ import io.javalin.http.HttpStatus;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import java.io.IOException;
 import java.util.NoSuchElementException;
 
 public class ColaboradorController {
@@ -115,6 +116,35 @@ public class ColaboradorController {
             ctx.status(HttpStatus.PRECONDITION_FAILED);
             ctx.result("El colaborador no es donador");
         }
+    }
+
+    public void suscribir(Context ctx) throws IOException {
+
+        var idString = ctx.pathParam("colabID");
+        Long idColab = Long.parseLong(idString);
+        var heladeraBody = ctx.bodyAsClass(HeladeraDTO.class);
+
+        this.fachada.suscribir(idColab, heladeraBody);
+
+        ctx.status(HttpStatus.OK);
+        ctx.json(heladeraBody);
+
+    }
+
+    public void evento(Context ctx){
+
+        var evento = ctx.bodyAsClass(EventoDTO.class);
+
+        this.fachada.evento(evento);
+
+    }
+
+    public void modificarNotificacion(Context ctx){
+        var idString = ctx.pathParam("colabID");
+        Long idColab = Long.parseLong(idString);
+        var nuevosTiposJSON = ctx.bodyAsClass(EventosSuscriptoDTO.class);
+        var tipos = nuevosTiposJSON.getFormas();
+
     }
 
 }

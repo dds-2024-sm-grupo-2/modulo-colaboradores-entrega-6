@@ -1,5 +1,6 @@
 package ar.edu.utn.dds.k3003.app;
 
+import ar.edu.utn.dds.k3003.clients.HeladeraProxy;
 import ar.edu.utn.dds.k3003.clients.LogisticaProxy;
 import ar.edu.utn.dds.k3003.clients.ViandasProxy;
 import ar.edu.utn.dds.k3003.facades.dtos.Constants;
@@ -47,11 +48,13 @@ public class WebApp{
 
         fachada.setViandasProxy(new ViandasProxy(objectMapper));
         fachada.setLogisticaProxy(new LogisticaProxy(objectMapper));
+        fachada.setHeladerasProxy(new HeladeraProxy(objectMapper));
 
         var URL_VIANDAS = env.get("URL_VIANDAS");
         var URL_LOGISTICA = env.get("URL_LOGISTICA");
         var URL_HELADERAS = env.get("URL_HELADERAS");
         var URL_COLABORADORES = env.get("URL_COLABORADORES");
+        var URL_INCIDENTES = env.get("URL_INCIDENTES");
 
         int port = Integer.parseInt(env.getOrDefault("PORT", "8080"));
 
@@ -89,6 +92,9 @@ public class WebApp{
         app.delete("/cleandb", colabController::borrar);
         app.post("/fallas", colabController::falla);
         app.post("/dinero/{colabID}", colabController::donacionDinero);
+        app.post("/suscribe/{colabID}", colabController::suscribir);
+        app.post("/evento",colabController::evento);
+        app.patch("/eventosNotificar/{colabId}", colabController::modificarNotificacion);
         app.get("/metrics", ctx -> {
             var auth = ctx.header("Authorization");
 

@@ -11,9 +11,9 @@
 
         <properties>
             <property name="javax.persistence.jdbc.user" value="santinocarrizo"/>
-            <property name="javax.persistence.jdbc.password" value="2A7zga6ujI9H4UGGcCCkTFoKyanW4R3p" />
+            <property name="javax.persistence.jdbc.password" value="gY42VmCg6RFJwLMimlt5bknpBhDTEsaQ" />
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://dpg-cs8om7g8fa8c73cfrcj0-a.oregon-postgres.render.com:5432/tp24db_q5br"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://dpg-csf7k388fa8c739splu0-a.oregon-postgres.render.com:5432/tpe5"/>
 
             <property name="hibernate.default_schema" value="public"/>
             <property name="hibernate.hbm2ddl.auto" value="create"/>
