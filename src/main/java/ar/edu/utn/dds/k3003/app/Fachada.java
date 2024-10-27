@@ -26,6 +26,7 @@ import lombok.Setter;
 import io.micrometer.core.instrument.Counter;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 @Getter
 @Setter
@@ -79,10 +80,8 @@ public class Fachada implements FachadaColaboradores{
 
   public Double puntosJPA(Long colaboradorId, EntityManager em, Integer anio, Integer mes) {
     Double puntosCalculados =
-            ((this.viandasDistribuidasPeso
-                    * logisticaFachada.trasladosDeColaborador(colaboradorId, mes, anio).size()))
-                    + (this.viandasDonadasPeso
-                    * viandasFachada.viandasDeColaborador(colaboradorId, mes, anio).size());
+            ((this.viandasDistribuidasPeso * logisticaFachada.trasladosDeColaborador(colaboradorId, mes, anio).size()))
+                    + (this.viandasDonadasPeso * viandasFachada.viandasDeColaborador(colaboradorId, mes, anio).size());
     em.getTransaction().begin();
     Colaborador colaborador = em.find(Colaborador.class, colaboradorId);
     puntosCalculados = puntosCalculados + (colaborador.getDineroDonado() * dineroDonadoPeso)
@@ -100,7 +99,7 @@ public class Fachada implements FachadaColaboradores{
 
     em.getTransaction().begin();
     Colaborador colab = em.find(Colaborador.class, id);
-    if(true){
+    if(colab.getFormas().contains(MisFormasDeColaborar.DONADORDEDINERO)){
     Double dineroAnterior = colab.getDineroDonado();
     Double dineroNuevo = dineroAnterior + dinero;
     colab.setDineroDonado(dineroNuevo);
@@ -131,13 +130,27 @@ public class Fachada implements FachadaColaboradores{
     HeladeraDTO dtoRTA = heladerasFachada.suscribir(id, heladeraDTO);
   }
 
-  public void evento(EventoDTO evento){
+  public void evento(EventoDTO evento, EntityManager em){
 
-    switch (evento.getEventType()){
-      case 1:
-        evento.getHeladera().getCantidadDeViandas();
-    }
+        List<Long> ids = evento.getListaColabIDS();
 
+        TypedQuery<Colaborador> query = em.createQuery(
+                "SELECT c FROM Colaborador c WHERE c.id IN :ids", Colaborador.class);
+        // Establecemos el parámetro
+        query.setParameter("ids", ids);
+        // Ejecutamos la consulta y devolvemos los resultados
+        List<Colaborador> colabs =  query.getResultList();
+
+        for(Colaborador colaborador : colabs){
+          colaborador.notificar(evento);
+        }
+  }
+
+  public void falla(HeladeraDTO heladera, EntityManager em){
+    //TODO:
+    //Detectar el tipo de falla / alerta
+    //Elegir al colaborador que sea tecnico y este suscrito a la heladera
+    //Reparar la heladera (mensaje a heladera y actualizar BD al colab)
   }
 
   public void setRegistry(PrometheusMeterRegistry registry){

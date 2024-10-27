@@ -6,15 +6,15 @@ import java.util.List;
 
 public class EventoDTO {
 
-    List<Integer> listaColabIDS;
+    List<Long> listaColabIDS;
     HeladeraDTO heladera;
     Integer eventType;
 
-    public List<Integer> getListaColabIDS() {
+    public List<Long> getListaColabIDS() {
         return listaColabIDS;
     }
 
-    public void setListaColabIDS(List<Integer> listaColabIDS) {
+    public void setListaColabIDS(List<Long> listaColabIDS) {
         this.listaColabIDS = listaColabIDS;
     }
 

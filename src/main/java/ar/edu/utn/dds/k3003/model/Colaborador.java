@@ -1,6 +1,7 @@
 package ar.edu.utn.dds.k3003.model;
 
 import ar.edu.utn.dds.k3003.facades.dtos.FormaDeColaborarEnum;
+import ar.edu.utn.dds.k3003.model.dtos.EventoDTO;
 import ar.edu.utn.dds.k3003.model.enums.MisFormasDeColaborar;
 
 import java.util.List;
@@ -30,6 +31,10 @@ public class Colaborador {
   private Double heladerasReparadas;
 
   public Colaborador() {}
+
+  public void notificar(EventoDTO evento){
+
+  }
   public Long getId() {
     return id;
   }

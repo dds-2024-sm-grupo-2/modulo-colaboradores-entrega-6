@@ -90,15 +90,10 @@ public class ColaboradorController {
         ctx.result("Formula actualizada correctamente");
     }
 
-    public void borrar(Context ctx){
-
-        entityManager.getTransaction().begin();
-        entityManager.createQuery("DELETE FROM Colaborador");
-        entityManager.getTransaction().commit();
-    }
-
     public void falla(Context ctx){
+
         var heladera = ctx.bodyAsClass(HeladeraDTO.class);
+        fachada.falla(heladera, entityManager);
     }
 
     public void donacionDinero(Context ctx){
@@ -135,7 +130,7 @@ public class ColaboradorController {
 
         var evento = ctx.bodyAsClass(EventoDTO.class);
 
-        this.fachada.evento(evento);
+        this.fachada.evento(evento, entityManager);
 
     }
 
@@ -144,6 +139,8 @@ public class ColaboradorController {
         Long idColab = Long.parseLong(idString);
         var nuevosTiposJSON = ctx.bodyAsClass(EventosSuscriptoDTO.class);
         var tipos = nuevosTiposJSON.getFormas();
+
+        //mandarle a heladeras q me cambie los eventos a los q estoy suscripto
 
     }
 
