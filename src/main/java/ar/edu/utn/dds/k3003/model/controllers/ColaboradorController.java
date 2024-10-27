@@ -136,7 +136,7 @@ public class ColaboradorController {
 
     }
 
-    public void modificarNotificacion(Context ctx){
+    public void modificarNotificacion(Context ctx) {
         var idString = ctx.pathParam("colabID");
         Long idColab = Long.parseLong(idString);
         var nuevosTiposJSON = ctx.bodyAsClass(EventosSuscriptoDTO.class);
@@ -145,5 +145,4 @@ public class ColaboradorController {
         //mandarle a heladeras q me cambie los eventos a los q estoy suscripto
 
     }
-
 }

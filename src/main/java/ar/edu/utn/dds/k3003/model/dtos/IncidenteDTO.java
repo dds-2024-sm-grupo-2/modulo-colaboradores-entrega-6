@@ -2,9 +2,14 @@ package ar.edu.utn.dds.k3003.model.dtos;
 
 import ar.edu.utn.dds.k3003.model.enums.EstadoIncidenteEnum;
 import ar.edu.utn.dds.k3003.model.enums.TipoIncidenteEnum;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@Data
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class IncidenteDTO {
 
     private Long id;
