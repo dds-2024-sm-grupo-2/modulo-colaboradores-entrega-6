@@ -33,6 +33,7 @@ public class MQUtils {
         factory.setVirtualHost(this.virtualHost);
         this.connection = factory.newConnection();
         this.channel = connection.createChannel();
+        channel.queueDeclare(queueName, true, false, false, null);
     }
 
     public void publish(String msg)throws IOException{

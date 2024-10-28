@@ -42,6 +42,7 @@ public class WebApp{
     public static void main(String[] args) throws IOException, TimeoutException {
         // Cola de mensajes--------------------------------------------------------------
 
+        /*
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("beaver.rmq.cloudamqp.com");
         factory.setUsername("glwpjirx");
@@ -52,6 +53,8 @@ public class WebApp{
 
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
+        channel.queueDeclare("Eventos Queue", true, false, false, null);
+        */
 
         MQUtils mqUtils = new MQUtils("beaver.rmq.cloudamqp.com", "glwpjirx","qT4p3OszSkGh5RmsqXSlv22XIKph6xIf",
                 "glwpjirx", "Eventos Queue");
