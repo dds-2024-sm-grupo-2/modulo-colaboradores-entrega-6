@@ -5,6 +5,7 @@ import ar.edu.utn.dds.k3003.facades.dtos.ColaboradorDTO;
 import ar.edu.utn.dds.k3003.facades.dtos.HeladeraDTO;
 import ar.edu.utn.dds.k3003.model.Colaborador;
 import ar.edu.utn.dds.k3003.model.dtos.*;
+import ar.edu.utn.dds.k3003.model.worker.MQUtils;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 
@@ -16,10 +17,12 @@ import java.util.NoSuchElementException;
 public class ColaboradorController {
     private final Fachada fachada;
     private final EntityManager entityManager;
+    private final MQUtils mqUtils;
 
-    public ColaboradorController(Fachada fachada, EntityManager entityManager) {
+    public ColaboradorController(Fachada fachada, EntityManager entityManager, MQUtils mqUtils) {
         this.fachada = fachada;
         this.entityManager = entityManager;
+        this.mqUtils = mqUtils;
     }
 
     public void agregar(Context ctx){
@@ -113,34 +116,13 @@ public class ColaboradorController {
         }
     }
 
-    public void suscribir(Context ctx) throws IOException {
+    public void evento(Context ctx) throws IOException {
 
-        var idString = ctx.pathParam("colabID");
-        Long idColab = Long.parseLong(idString);
-        var heladeraBody = ctx.bodyAsClass(HeladeraDTO.class);
+        var evento = ctx.bodyAsClass(NotificacionDTO.class);
 
-        this.fachada.suscribir(idColab, heladeraBody);
-
-        ctx.status(HttpStatus.OK);
-        ctx.json(heladeraBody);
-
-    }
-
-    public void evento(Context ctx){
-
-        var evento = ctx.bodyAsClass(EventoDTO.class);
+        mqUtils.publish(ctx.body());
 
         this.fachada.evento(evento, entityManager);
-
-    }
-
-    public void modificarNotificacion(Context ctx) {
-        var idString = ctx.pathParam("colabID");
-        Long idColab = Long.parseLong(idString);
-        var nuevosTiposJSON = ctx.bodyAsClass(EventosSuscriptoDTO.class);
-        var tipos = nuevosTiposJSON.getFormas();
-
-        //mandarle a heladeras q me cambie los eventos a los q estoy suscripto
 
     }
 }

@@ -8,10 +8,7 @@ import ar.edu.utn.dds.k3003.facades.dtos.ColaboradorDTO;
 import ar.edu.utn.dds.k3003.facades.dtos.FormaDeColaborarEnum;
 import ar.edu.utn.dds.k3003.facades.dtos.HeladeraDTO;
 import ar.edu.utn.dds.k3003.model.Colaborador;
-import ar.edu.utn.dds.k3003.model.dtos.DineroDTO;
-import ar.edu.utn.dds.k3003.model.dtos.EventoDTO;
-import ar.edu.utn.dds.k3003.model.dtos.IncidenteDTO;
-import ar.edu.utn.dds.k3003.model.dtos.MiColaboradorDTO;
+import ar.edu.utn.dds.k3003.model.dtos.*;
 import ar.edu.utn.dds.k3003.model.enums.MisFormasDeColaborar;
 import ar.edu.utn.dds.k3003.model.enums.TipoIncidenteEnum;
 import ar.edu.utn.dds.k3003.repositorios.ColaboradorMapper;
@@ -127,14 +124,9 @@ public class Fachada implements FachadaColaboradores{
     this.setArregloPeso(reparacionJPA);
   }
 
-  public void suscribir(Long id, HeladeraDTO heladeraDTO) throws IOException {
+  public void evento(NotificacionDTO notificacionDTO, EntityManager em){
 
-    HeladeraDTO dtoRTA = heladerasFachada.suscribir(id, heladeraDTO);
-  }
-
-  public void evento(EventoDTO evento, EntityManager em){
-
-        List<Long> ids = evento.getListaColabIDS();
+        List<Long> ids = notificacionDTO.getIdColab();
 
         TypedQuery<Colaborador> query = em.createQuery(
                 "SELECT c FROM Colaborador c WHERE c.id IN :ids", Colaborador.class);
@@ -144,7 +136,7 @@ public class Fachada implements FachadaColaboradores{
         List<Colaborador> colabs =  query.getResultList();
 
         for(Colaborador colaborador : colabs){
-          colaborador.notificar(evento);
+          colaborador.notificar(notificacionDTO);
         }
   }
 

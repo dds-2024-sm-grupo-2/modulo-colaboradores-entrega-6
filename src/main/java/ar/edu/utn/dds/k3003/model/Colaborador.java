@@ -1,7 +1,6 @@
 package ar.edu.utn.dds.k3003.model;
 
-import ar.edu.utn.dds.k3003.facades.dtos.FormaDeColaborarEnum;
-import ar.edu.utn.dds.k3003.model.dtos.EventoDTO;
+import ar.edu.utn.dds.k3003.model.dtos.NotificacionDTO;
 import ar.edu.utn.dds.k3003.model.enums.MisFormasDeColaborar;
 
 import java.util.List;
@@ -32,7 +31,9 @@ public class Colaborador {
 
   public Colaborador() {}
 
-  public void notificar(EventoDTO evento){
+  public void notificar(NotificacionDTO notificacionDTO){
+
+    System.out.println("Mensaje Recibido: " + notificacionDTO.getMsg());
 
   }
   public Long getId() {

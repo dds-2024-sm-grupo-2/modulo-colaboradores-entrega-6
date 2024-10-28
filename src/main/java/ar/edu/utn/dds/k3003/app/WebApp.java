@@ -5,19 +5,25 @@ import ar.edu.utn.dds.k3003.clients.LogisticaProxy;
 import ar.edu.utn.dds.k3003.clients.ViandasProxy;
 import ar.edu.utn.dds.k3003.facades.dtos.Constants;
 import ar.edu.utn.dds.k3003.model.controllers.*;
+import ar.edu.utn.dds.k3003.model.worker.MQUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.rabbitmq.client.Channel;
+import com.rabbitmq.client.Connection;
+import com.rabbitmq.client.ConnectionFactory;
 import io.javalin.Javalin;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.concurrent.TimeoutException;
 
 import io.javalin.micrometer.MicrometerPlugin;
 import io.micrometer.core.instrument.binder.jvm.JvmGcMetrics;
@@ -33,7 +39,23 @@ public class WebApp{
     public static EntityManagerFactory entityManagerFactory;
     public static final String TOKEN = "token";
 
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException, TimeoutException {
+        // Cola de mensajes--------------------------------------------------------------
+
+        ConnectionFactory factory = new ConnectionFactory();
+        factory.setHost("beaver.rmq.cloudamqp.com");
+        factory.setUsername("glwpjirx");
+        factory.setVirtualHost("glwpjirx");
+        factory.setPassword("qT4p3OszSkGh5RmsqXSlv22XIKph6xIf");
+
+        String queueName = "EventosQueue";
+
+        Connection connection = factory.newConnection();
+        Channel channel = connection.createChannel();
+
+        MQUtils mqUtils = new MQUtils("beaver.rmq.cloudamqp.com", "glwpjirx","qT4p3OszSkGh5RmsqXSlv22XIKph6xIf",
+                "glwpjirx", "Eventos Queue");
+        mqUtils.init();
 
         // WEBAPP---------------------------------------------------------------------------
 
@@ -44,7 +66,7 @@ public class WebApp{
 
         var fachada  = new Fachada();
         var objectMapper = createObjectMapper();
-        var colabController = new ColaboradorController(fachada,entityManager);
+        var colabController = new ColaboradorController(fachada,entityManager,mqUtils);
 
         fachada.setViandasProxy(new ViandasProxy(objectMapper));
         fachada.setLogisticaProxy(new LogisticaProxy(objectMapper));
@@ -64,8 +86,6 @@ public class WebApp{
 
         registry.config().commonTags("app", "metrics-sample");
 
-            //Metricas de la JVM
-
         try (var jvmGcMetrics = new JvmGcMetrics();
              var jvmHeapPressureMetrics = new JvmHeapPressureMetrics()) {
             jvmGcMetrics.bindTo(registry);
@@ -79,6 +99,7 @@ public class WebApp{
 
         fachada.setRegistry(registry);
 
+
         // Endpoints------------------------------------------------------------------
 
         var app = Javalin.create(cf -> {cf.registerPlugin(micrometerPlugin); }).start(port);
@@ -91,9 +112,7 @@ public class WebApp{
         app.put("/formula", colabController::actualizar);
         app.post("/fallas", colabController::falla);
         app.post("/dinero/{colabID}", colabController::donacionDinero);
-        app.post("/suscribe/{colabID}", colabController::suscribir);
         app.post("/evento",colabController::evento);
-        app.patch("/eventosNotificar/{colabId}", colabController::modificarNotificacion);
         app.get("/metrics", ctx -> {
             var auth = ctx.header("Authorization");
 
@@ -130,4 +149,21 @@ public class WebApp{
         }
         entityManagerFactory = Persistence.createEntityManagerFactory("db", configOverrides);
     }
+
+    public static EntityManagerFactory startEntityManagerFactory1(){
+        // https://stackoverflow.com/questions/8836834/read-environment-variables-in-persistence-xml-file
+        Map<String, String> env =System.getenv();
+        Map<String, Object> configOverrides = new HashMap<String, Object>();
+
+        String[] keys = new String[] { "javax.persistence.jdbc.url", "javax.persistence.jdbc.user",
+                "javax.persistence.jdbc.driver"};
+        for (String key : keys) {
+            if (env.containsKey(key)) {
+                String value = env.get(key);
+                configOverrides.put(key, value);
+            }
+        }
+        return Persistence.createEntityManagerFactory("db", configOverrides);
+    }
+
 }
