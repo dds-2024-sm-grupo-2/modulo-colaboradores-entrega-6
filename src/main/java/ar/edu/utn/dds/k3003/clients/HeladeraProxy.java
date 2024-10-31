@@ -35,24 +35,16 @@ public class HeladeraProxy implements FachadaHeladeras{
         this.service = retrofit.create(HeladeraRetrofitClient.class);
     }
 
-    public HeladeraDTO suscribir(Long id, HeladeraDTO heladeraDTO) throws IOException {
-
-        Response<HeladeraDTO> execute = null;
-
+    public void cambiarEstadoActivo(Long id) {
         try {
-            execute = service.suscribir(id, heladeraDTO).execute();
-        }catch (IOException e){
-            throw new RuntimeException(e);
+            Integer idInt = Integer.parseInt(id.toString()); //parsear de long a integer
+            Response<Void> response = service.cambiarEstadoActivo(idInt).execute();
+            if (!response.isSuccessful()) {
+                throw new RuntimeException("No se pudo cambiar estado de la heladera: " + response.errorBody().string());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error al cambiar estado en heladera: ", e);
         }
-
-        if (execute.isSuccessful()){
-            return execute.body();
-        }
-        if(execute.code() == HttpStatus.NOT_FOUND.getCode()){
-            throw new NoSuchElementException("No se encontro la heladera en HELADERAS");
-        }
-        throw new RuntimeException("Error al conectarse con HELADERAS");
-
     }
 
     @Override

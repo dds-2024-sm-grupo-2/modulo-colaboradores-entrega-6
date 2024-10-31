@@ -17,6 +17,8 @@ import ar.edu.utn.dds.k3003.repositorios.ColaboradorRepository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicLong;
 
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
@@ -145,9 +147,20 @@ public class Fachada implements FachadaColaboradores{
     TipoIncidenteEnum tipo = incidenteDTO.getTipoIncidente();
 
     if(tipo == TipoIncidenteEnum.FALLA_TECNICA){
-      //elegir colab tecnico y ??suscripto??
-      //avisar a heladera (mensaje)
-      //actualizar DB a colab elegido
+      TypedQuery<Colaborador> query = em.createQuery(
+              "SELECT c FROM Colaborador c WHERE :tipoForma MEMBER OF c.formas", Colaborador.class);
+      query.setParameter("tipoForma", MisFormasDeColaborar.TECNICO);
+
+      List<Colaborador> colabs = query.getResultList();
+
+      Colaborador colabElegido = colabs.get(ThreadLocalRandom.current().nextInt(colabs.size()));
+
+      this.heladerasFachada.cambiarEstadoActivo(colabElegido.getId());
+
+      em.getTransaction().begin();
+      Colaborador colabDB = em.find(Colaborador.class, colabElegido.getId());
+      colabDB.setHeladerasReparadas(colabDB.getHeladerasReparadas() + 1);
+      em.getTransaction().commit();
     }
 
   }
