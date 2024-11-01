@@ -60,8 +60,8 @@ public class WebApp{
                 "glwpjirx", "Eventos Queue");
         mqUtils.init();
 
-        MQUtils mqUtilsInci = new MQUtils("beaver.rmq.cloudamqp.com", "glwpjirx","qT4p3OszSkGh5RmsqXSlv22XIKph6xIf",
-                "glwpjirx", "Incidentes Queue");
+        MQUtils mqUtilsInci = new MQUtils("beaver.rmq.cloudamqp.com", "ekkxxsoi","xGMMnPyxEItGNdowABN7varDVo98Wq99",
+                "ekkxxsoi", "Incidentes Queue");
         mqUtils.init();
 
         // WEBAPP---------------------------------------------------------------------------
