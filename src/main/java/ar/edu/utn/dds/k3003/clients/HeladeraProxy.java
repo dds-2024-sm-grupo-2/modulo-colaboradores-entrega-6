@@ -37,8 +37,7 @@ public class HeladeraProxy implements FachadaHeladeras{
 
     public void cambiarEstadoActivo(Long id) {
         try {
-            Integer idInt = Integer.parseInt(id.toString()); //parsear de long a integer
-            Response<Void> response = service.cambiarEstadoActivo(idInt).execute();
+            Response<Void> response = service.cambiarEstadoActivo(id.intValue()).execute();
             if (!response.isSuccessful()) {
                 throw new RuntimeException("No se pudo cambiar estado de la heladera: " + response.errorBody().string());
             }

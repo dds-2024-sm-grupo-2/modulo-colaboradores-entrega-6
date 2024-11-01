@@ -40,4 +40,7 @@ public class MQUtils {
         channel.basicPublish("", this.queueName, null, msg.getBytes());
     }
 
+    public String get(String nombreQueue) throws IOException {
+        return channel.basicGet(nombreQueue, true).toString();
+    }
 }

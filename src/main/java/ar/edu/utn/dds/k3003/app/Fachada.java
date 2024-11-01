@@ -132,9 +132,7 @@ public class Fachada implements FachadaColaboradores{
 
         TypedQuery<Colaborador> query = em.createQuery(
                 "SELECT c FROM Colaborador c WHERE c.id IN :ids", Colaborador.class);
-        // Establecemos el parámetro
         query.setParameter("ids", ids);
-        // Ejecutamos la consulta y devolvemos los resultados
         List<Colaborador> colabs =  query.getResultList();
 
         for(Colaborador colaborador : colabs){
@@ -142,7 +140,7 @@ public class Fachada implements FachadaColaboradores{
         }
   }
 
-  public void falla(IncidenteDTO incidenteDTO, EntityManager em){
+  public void arreglarFalla(IncidenteDTO incidenteDTO, EntityManager em){
 
     TipoIncidenteEnum tipo = incidenteDTO.getTipoIncidente();
 
@@ -165,6 +163,17 @@ public class Fachada implements FachadaColaboradores{
 
   }
 
+
+
+
+
+
+
+
+
+
+
+
   public void setRegistry(PrometheusMeterRegistry registry){
     this.registry = registry;
 
@@ -173,7 +182,6 @@ public class Fachada implements FachadaColaboradores{
     this.puntosTotal = Counter.builder("app.puntos.totales").
             description("Cantidad de puntos totales").register(registry);
   }
-
   @Override
   public void setLogisticaProxy(FachadaLogistica logistica) {
     this.logisticaFachada = logistica;
@@ -187,6 +195,33 @@ public class Fachada implements FachadaColaboradores{
   public void setHeladerasProxy(HeladeraProxy heladeras) {
     this.heladerasFachada = heladeras;
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   // Overrides de la fachada-------------------------------------------------------------------------------------

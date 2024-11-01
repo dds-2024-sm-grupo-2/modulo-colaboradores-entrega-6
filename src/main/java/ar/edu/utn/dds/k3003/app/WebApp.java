@@ -60,6 +60,10 @@ public class WebApp{
                 "glwpjirx", "Eventos Queue");
         mqUtils.init();
 
+        MQUtils mqUtilsInci = new MQUtils("beaver.rmq.cloudamqp.com", "glwpjirx","qT4p3OszSkGh5RmsqXSlv22XIKph6xIf",
+                "glwpjirx", "Incidentes Queue");
+        mqUtils.init();
+
         // WEBAPP---------------------------------------------------------------------------
 
         var env = System.getenv();
@@ -69,7 +73,7 @@ public class WebApp{
 
         var fachada  = new Fachada();
         var objectMapper = createObjectMapper();
-        var colabController = new ColaboradorController(fachada,entityManager,mqUtils);
+        var colabController = new ColaboradorController(fachada,entityManager,mqUtils, mqUtilsInci, objectMapper);
 
         fachada.setViandasProxy(new ViandasProxy(objectMapper));
         fachada.setLogisticaProxy(new LogisticaProxy(objectMapper));
@@ -115,6 +119,7 @@ public class WebApp{
         app.put("/formula", colabController::actualizar);
         app.post("/fallas", colabController::falla);
         app.post("/dinero/{colabID}", colabController::donacionDinero);
+        app.post("/arreglarHeladera", colabController::arreglarHeladera);
         app.post("/evento",colabController::evento);
         app.get("/metrics", ctx -> {
             var auth = ctx.header("Authorization");

@@ -6,6 +6,7 @@ import ar.edu.utn.dds.k3003.facades.dtos.HeladeraDTO;
 import ar.edu.utn.dds.k3003.model.Colaborador;
 import ar.edu.utn.dds.k3003.model.dtos.*;
 import ar.edu.utn.dds.k3003.model.worker.MQUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 
@@ -18,11 +19,16 @@ public class ColaboradorController {
     private final Fachada fachada;
     private final EntityManager entityManager;
     private final MQUtils mqUtils;
+    private final MQUtils mqUtilsInci;
+    private final ObjectMapper objectMapper;
 
-    public ColaboradorController(Fachada fachada, EntityManager entityManager, MQUtils mqUtils) {
+    public ColaboradorController(Fachada fachada, EntityManager entityManager,
+                                 MQUtils mqUtils, MQUtils mqUtilsInci, ObjectMapper objectMapper) {
         this.fachada = fachada;
         this.entityManager = entityManager;
         this.mqUtils = mqUtils;
+        this.mqUtilsInci = mqUtilsInci;
+        this.objectMapper = objectMapper;
     }
 
     public void agregar(Context ctx){
@@ -93,10 +99,8 @@ public class ColaboradorController {
         ctx.result("Formula actualizada correctamente");
     }
 
-    public void falla(Context ctx){
-        var incidenteDTO = ctx.bodyAsClass(IncidenteDTO.class);
-
-        fachada.falla(incidenteDTO, entityManager);
+    public void falla(Context ctx) throws IOException {
+        mqUtilsInci.publish(ctx.body());
     }
 
     public void donacionDinero(Context ctx){
@@ -124,5 +128,12 @@ public class ColaboradorController {
 
         this.fachada.evento(evento, entityManager);
 
+    }
+
+    public void arreglarHeladera(Context ctx) throws IOException {
+        String incidenteStr = mqUtilsInci.get("Incidentes Queue");
+        IncidenteDTO incidente = objectMapper.readValue(incidenteStr, IncidenteDTO.class);
+
+        fachada.arreglarFalla(incidente, entityManager);
     }
 }
