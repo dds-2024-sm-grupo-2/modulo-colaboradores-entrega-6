@@ -3,6 +3,7 @@ package ar.edu.utn.dds.k3003.model.worker;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.GetResponse;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -41,6 +42,6 @@ public class MQUtils {
     }
 
     public String get(String nombreQueue) throws IOException {
-        return channel.basicGet(nombreQueue, true).toString();
+        return new String(channel.basicGet(nombreQueue, true).getBody(), "UTF-8");
     }
 }

@@ -7,6 +7,7 @@ import ar.edu.utn.dds.k3003.model.Colaborador;
 import ar.edu.utn.dds.k3003.model.dtos.*;
 import ar.edu.utn.dds.k3003.model.worker.MQUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rabbitmq.client.GetResponse;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 
@@ -132,6 +133,7 @@ public class ColaboradorController {
 
     public void arreglarHeladera(Context ctx) throws IOException {
         String incidenteStr = mqUtilsInci.get("Incidentes Queue");
+
         IncidenteDTO incidente = objectMapper.readValue(incidenteStr, IncidenteDTO.class);
 
         fachada.arreglarFalla(incidente, entityManager);
