@@ -42,6 +42,8 @@ public class MQUtils {
     }
 
     public String get(String nombreQueue) throws IOException {
-        return new String(channel.basicGet(nombreQueue, true).getBody(), "UTF-8");
+        GetResponse response =  channel.basicGet(nombreQueue, true);
+        String str = new String(response.getBody(), "UTF-8");
+        return str;
     }
 }
