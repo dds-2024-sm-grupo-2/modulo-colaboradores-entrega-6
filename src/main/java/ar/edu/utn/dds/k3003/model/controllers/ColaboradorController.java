@@ -19,16 +19,11 @@ import java.util.NoSuchElementException;
 public class ColaboradorController {
     private final Fachada fachada;
     private final EntityManager entityManager;
-    private final MQUtils mqUtils;
-    private final MQUtils mqUtilsInci;
     private final ObjectMapper objectMapper;
 
-    public ColaboradorController(Fachada fachada, EntityManager entityManager,
-                                 MQUtils mqUtils, MQUtils mqUtilsInci, ObjectMapper objectMapper) {
+    public ColaboradorController(Fachada fachada, EntityManager entityManager, ObjectMapper objectMapper) {
         this.fachada = fachada;
         this.entityManager = entityManager;
-        this.mqUtils = mqUtils;
-        this.mqUtilsInci = mqUtilsInci;
         this.objectMapper = objectMapper;
     }
 
@@ -101,7 +96,10 @@ public class ColaboradorController {
     }
 
     public void falla(Context ctx) throws IOException {
-        mqUtilsInci.publish(ctx.body());
+        var incidenteDTO = ctx.bodyAsClass(IncidenteDTO.class);
+        entityManager.getTransaction().begin();
+        entityManager.persist(incidenteDTO);
+        entityManager.getTransaction().commit();
     }
 
     public void donacionDinero(Context ctx){
@@ -125,17 +123,18 @@ public class ColaboradorController {
 
         var evento = ctx.bodyAsClass(NotificacionDTO.class);
 
-        mqUtils.publish(ctx.body());
+        entityManager.getTransaction().begin();
+        entityManager.persist(evento);
+        entityManager.getTransaction().commit();
 
-        this.fachada.evento(evento, entityManager);
-
+        //this.fachada.evento(evento, entityManager); Entrega6
     }
 
     public void arreglarHeladera(Context ctx) throws IOException {
-        String incidenteStr = mqUtilsInci.get("Incidentes Queue");
+        var idString = ctx.pathParam("colabID");
+        Long id = Long.parseLong(idString);
+        var incidenteBody = ctx.bodyAsClass(IncidenteDTO.class);
 
-        IncidenteDTO incidente = objectMapper.readValue(incidenteStr, IncidenteDTO.class);
-
-        fachada.arreglarFalla(incidente, entityManager);
+       fachada.arreglarFalla(id, incidenteBody, entityManager);
     }
 }

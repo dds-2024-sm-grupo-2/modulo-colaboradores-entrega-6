@@ -40,29 +40,6 @@ public class WebApp{
     public static final String TOKEN = "token";
 
     public static void main(String[] args) throws IOException, TimeoutException {
-        // Cola de mensajes--------------------------------------------------------------
-
-        /*
-        ConnectionFactory factory = new ConnectionFactory();
-        factory.setHost("beaver.rmq.cloudamqp.com");
-        factory.setUsername("glwpjirx");
-        factory.setVirtualHost("glwpjirx");
-        factory.setPassword("qT4p3OszSkGh5RmsqXSlv22XIKph6xIf");
-
-        String queueName = "EventosQueue";
-
-        Connection connection = factory.newConnection();
-        Channel channel = connection.createChannel();
-        channel.queueDeclare("Eventos Queue", true, false, false, null);
-        */
-
-        MQUtils mqUtils = new MQUtils("beaver.rmq.cloudamqp.com", "glwpjirx","qT4p3OszSkGh5RmsqXSlv22XIKph6xIf",
-                "glwpjirx", "Eventos Queue");
-        mqUtils.init();
-
-        MQUtils mqUtilsInci = new MQUtils("beaver.rmq.cloudamqp.com", "ekkxxsoi","xGMMnPyxEItGNdowABN7varDVo98Wq99",
-                "ekkxxsoi", "Incidentes Queue");
-        mqUtilsInci.init();
 
         // WEBAPP---------------------------------------------------------------------------
 
@@ -73,7 +50,7 @@ public class WebApp{
 
         var fachada  = new Fachada();
         var objectMapper = createObjectMapper();
-        var colabController = new ColaboradorController(fachada,entityManager,mqUtils, mqUtilsInci, objectMapper);
+        var colabController = new ColaboradorController(fachada,entityManager, objectMapper);
 
         fachada.setViandasProxy(new ViandasProxy(objectMapper));
         fachada.setLogisticaProxy(new LogisticaProxy(objectMapper));
@@ -119,7 +96,7 @@ public class WebApp{
         app.put("/formula", colabController::actualizar);
         app.post("/fallas", colabController::falla);
         app.post("/dinero/{colabID}", colabController::donacionDinero);
-        app.post("/arreglarHeladera", colabController::arreglarHeladera);
+        app.post("/arreglarHeladera/colaborador/{colabID}", colabController::arreglarHeladera);
         app.post("/evento",colabController::evento);
         app.get("/metrics", ctx -> {
             var auth = ctx.header("Authorization");
