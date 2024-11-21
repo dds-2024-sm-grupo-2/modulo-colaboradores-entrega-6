@@ -2,11 +2,9 @@
 
 TP DDS 2024 - Modulo Colaboradores
 
-Componente: Colaboradores
-
 Contexto: https://docs.google.com/document/d/1vlYmWUJaKandhazZ8mAKcG8t91IAZ-81WhJdITJhCBA/edit
 
-Entrega 5: https://docs.google.com/document/d/1STsw6qXd5kOMSGBomCzsdrL0JgbzA3mvc8vR2gY6PWQ/edit?tab=t.0
+Entrega 6: https://docs.google.com/document/d/18cT2AzTd9-J4ZIMfJMPhZF_uTIL7CzshSejAB84BNZU/edit?tab=t.0
 
 URL del despliegue: https://modulo-colaboradores-entrega-5.onrender.com
 
