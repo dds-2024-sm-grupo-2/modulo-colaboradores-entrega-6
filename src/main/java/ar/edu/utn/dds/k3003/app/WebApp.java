@@ -1,24 +1,16 @@
 package ar.edu.utn.dds.k3003.app;
 
-import ar.edu.utn.dds.k3003.clients.HeladeraProxy;
-import ar.edu.utn.dds.k3003.clients.IncidenteProxy;
-import ar.edu.utn.dds.k3003.clients.LogisticaProxy;
-import ar.edu.utn.dds.k3003.clients.ViandasProxy;
+import ar.edu.utn.dds.k3003.clients.*;
 import ar.edu.utn.dds.k3003.facades.dtos.Constants;
 import ar.edu.utn.dds.k3003.model.controllers.*;
-import ar.edu.utn.dds.k3003.model.worker.MQUtils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
 import io.javalin.Javalin;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.criteria.CriteriaBuilder;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -58,6 +50,7 @@ public class WebApp{
         fachada.setLogisticaProxy(new LogisticaProxy(objectMapper));
         fachada.setHeladerasProxy(new HeladeraProxy(objectMapper));
         fachada.setIncidenteProxy(new IncidenteProxy(objectMapper));
+        fachada.setTelegramProxy(new TelegramProxy(objectMapper));
 
         var URL_VIANDAS = env.get("URL_VIANDAS");
         var URL_LOGISTICA = env.get("URL_LOGISTICA");

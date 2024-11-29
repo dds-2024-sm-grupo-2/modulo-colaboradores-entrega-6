@@ -2,24 +2,20 @@ package ar.edu.utn.dds.k3003.app;
 
 import ar.edu.utn.dds.k3003.clients.HeladeraProxy;
 import ar.edu.utn.dds.k3003.clients.IncidenteProxy;
+import ar.edu.utn.dds.k3003.clients.TelegramProxy;
 import ar.edu.utn.dds.k3003.facades.FachadaLogistica;
 import ar.edu.utn.dds.k3003.facades.FachadaColaboradores;
 import ar.edu.utn.dds.k3003.facades.FachadaViandas;
 import ar.edu.utn.dds.k3003.facades.dtos.ColaboradorDTO;
 import ar.edu.utn.dds.k3003.facades.dtos.FormaDeColaborarEnum;
-import ar.edu.utn.dds.k3003.facades.dtos.HeladeraDTO;
 import ar.edu.utn.dds.k3003.model.Colaborador;
 import ar.edu.utn.dds.k3003.model.dtos.*;
 import ar.edu.utn.dds.k3003.model.enums.MisFormasDeColaborar;
-import ar.edu.utn.dds.k3003.model.enums.TipoIncidenteEnum;
 import ar.edu.utn.dds.k3003.repositorios.ColaboradorMapper;
 import ar.edu.utn.dds.k3003.repositorios.ColaboradorRepository;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicLong;
 
 import io.micrometer.prometheusmetrics.PrometheusMeterRegistry;
@@ -41,6 +37,7 @@ public class Fachada implements FachadaColaboradores{
     private FachadaLogistica logisticaFachada;
     private HeladeraProxy heladerasFachada;
     private IncidenteProxy incidenteProxy;
+    private TelegramProxy telegramProxy;
     private static AtomicLong seqId = new AtomicLong();
 
     private PrometheusMeterRegistry registry;
@@ -138,8 +135,9 @@ public class Fachada implements FachadaColaboradores{
         query.setParameter("ids", ids);
         List<Colaborador> colabs =  query.getResultList();
 
+        System.out.println(colabs.toString());
         for(Colaborador colaborador : colabs){
-            colaborador.notificar(notificacionDTO);
+            telegramProxy.notificar(colaborador.getChatID(), notificacionDTO.getMsg());
         }
     }
 

@@ -1,18 +1,12 @@
 package ar.edu.utn.dds.k3003.model.controllers;
 
 import ar.edu.utn.dds.k3003.app.Fachada;
-import ar.edu.utn.dds.k3003.facades.dtos.ColaboradorDTO;
-import ar.edu.utn.dds.k3003.facades.dtos.HeladeraDTO;
 import ar.edu.utn.dds.k3003.model.Colaborador;
 import ar.edu.utn.dds.k3003.model.dtos.*;
-import ar.edu.utn.dds.k3003.model.worker.MQUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rabbitmq.client.GetResponse;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
-
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 
@@ -127,7 +121,7 @@ public class ColaboradorController {
         entityManager.persist(evento);
         entityManager.getTransaction().commit();
 
-        //this.fachada.evento(evento, entityManager); Entrega6
+        this.fachada.evento(evento, entityManager);
     }
 
     public void arreglarHeladera(Context ctx) throws IOException {
