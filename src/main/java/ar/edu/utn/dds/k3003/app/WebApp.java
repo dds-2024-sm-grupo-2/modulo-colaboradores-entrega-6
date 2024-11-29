@@ -1,6 +1,7 @@
 package ar.edu.utn.dds.k3003.app;
 
 import ar.edu.utn.dds.k3003.clients.HeladeraProxy;
+import ar.edu.utn.dds.k3003.clients.IncidenteProxy;
 import ar.edu.utn.dds.k3003.clients.LogisticaProxy;
 import ar.edu.utn.dds.k3003.clients.ViandasProxy;
 import ar.edu.utn.dds.k3003.facades.dtos.Constants;
@@ -17,6 +18,7 @@ import io.javalin.Javalin;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -55,6 +57,7 @@ public class WebApp{
         fachada.setViandasProxy(new ViandasProxy(objectMapper));
         fachada.setLogisticaProxy(new LogisticaProxy(objectMapper));
         fachada.setHeladerasProxy(new HeladeraProxy(objectMapper));
+        fachada.setIncidenteProxy(new IncidenteProxy(objectMapper));
 
         var URL_VIANDAS = env.get("URL_VIANDAS");
         var URL_LOGISTICA = env.get("URL_LOGISTICA");
