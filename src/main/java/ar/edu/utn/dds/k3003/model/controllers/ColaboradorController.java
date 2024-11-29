@@ -137,4 +137,9 @@ public class ColaboradorController {
 
        fachada.arreglarFalla(id, incidenteBody, entityManager);
     }
+    public void nuevoColabConChat(Context ctx) throws IOException {
+        var colaboradorConChatBody = ctx.bodyAsClass(ColaboradorConChatDTO.class);
+
+        fachada.nuevoColaboradorConChat(colaboradorConChatBody, entityManager);
+    }
 }

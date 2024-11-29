@@ -29,6 +29,9 @@ public class Colaborador {
   @Column
   private Double heladerasReparadas;
 
+  @Column
+  private Long chatID;
+
   public Colaborador() {}
 
   public void notificar(NotificacionDTO notificacionDTO){
@@ -82,5 +85,13 @@ public class Colaborador {
 
   public void setHeladerasReparadas(Double heladerasReparadas) {
     this.heladerasReparadas = heladerasReparadas;
+  }
+
+  public Long getChatID() {
+    return chatID;
+  }
+
+  public void setChatID(Long chatID) {
+    this.chatID = chatID;
   }
 }

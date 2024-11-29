@@ -59,6 +59,7 @@ public class Fachada implements FachadaColaboradores{
         colaborador.setPuntos((double)0);
         colaborador.setDineroDonado((double)0);
         colaborador.setHeladerasReparadas((double)0);
+        colaborador.setChatID(null);
 
         em.getTransaction().begin();
         Colaborador colabRta = this.colaboradorRepository.saveJPA(colaborador, em);
@@ -151,6 +152,21 @@ public class Fachada implements FachadaColaboradores{
         Colaborador colabDB = em.find(Colaborador.class, id);
         colabDB.setHeladerasReparadas(colabDB.getHeladerasReparadas() + 1);
         em.getTransaction().commit();
+    }
+
+    public void nuevoColaboradorConChat(ColaboradorConChatDTO colaboradorConChatDTO, EntityManager em){
+        Colaborador colaborador = new Colaborador();
+        colaborador.setNombre(colaboradorConChatDTO.getNombre());
+        colaborador.setFormas(colaboradorConChatDTO.getFormas());
+        colaborador.setPuntos((double)0);
+        colaborador.setDineroDonado((double)0);
+        colaborador.setHeladerasReparadas((double)0);
+        colaborador.setChatID(colaboradorConChatDTO.getChatID());
+
+        em.getTransaction().begin();
+        Colaborador colabRta = this.colaboradorRepository.saveJPA(colaborador, em);
+        em.getTransaction().commit();
+        cantidadColaboradores.increment();
     }
 
 

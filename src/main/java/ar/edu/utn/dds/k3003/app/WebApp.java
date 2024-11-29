@@ -101,6 +101,7 @@ public class WebApp{
         app.post("/dinero/{colabID}", colabController::donacionDinero);
         app.post("/arreglarHeladera/colaborador/{colabID}", colabController::arreglarHeladera);
         app.post("/evento",colabController::evento);
+        app.post("colaboradorConChat", colabController::nuevoColabConChat);
         app.get("/metrics", ctx -> {
             var auth = ctx.header("Authorization");
 
