@@ -137,7 +137,7 @@ public class Fachada implements FachadaColaboradores{
 
         System.out.println(colabs.toString());
         for(Colaborador colaborador : colabs){
-            telegramProxy.notificar(colaborador.getChatID(), notificacionDTO.getMsg());
+            telegramProxy.notificar(colaborador.getChatID(), new MensajeDTO(notificacionDTO.getMsg()));
         }
     }
 

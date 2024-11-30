@@ -1,5 +1,6 @@
 package ar.edu.utn.dds.k3003.clients;
 
+import ar.edu.utn.dds.k3003.model.dtos.MensajeDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import retrofit2.Response;
 import retrofit2.Retrofit;
@@ -26,7 +27,7 @@ public class TelegramProxy {
         this.service = retrofit.create(TelegramRetrofitClient.class);
     }
 
-    public void notificar(Long chatID, String msg) {
+    public void notificar(Long chatID, MensajeDTO msg) {
         try {
             Response<Void> response = service.notificar(chatID, msg).execute();
             if (!response.isSuccessful()) {
